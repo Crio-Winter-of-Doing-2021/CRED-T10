@@ -1,0 +1,17 @@
+{
+  "name": "cred-t10-backend",
+  "version": "1.0.0",
+  "description": "Backend Application for Credit Card Management System",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "author": "CRED-T10 team",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7"
+  }
+}
