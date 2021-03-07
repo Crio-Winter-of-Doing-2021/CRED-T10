@@ -24,7 +24,8 @@ app.get('/', function (req, res) {
 
 app.use('/api', require('./routes/backendRoutes.js'));
 
-app.use('/cards', require('./routes/cards.js'));
+app.use('/api/users', require('./routes/users.js'));
+app.use('/api/cards', require('./routes/cards.js'));
 
 app.listen(PORT,()=>{
     console.log(`Backend Server running successfully on ${PORT}....\n`);

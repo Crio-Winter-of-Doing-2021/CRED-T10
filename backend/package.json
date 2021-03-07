@@ -12,7 +12,7 @@
   "license": "ISC",
   "engines": "",
   "dependencies": {
-    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "config": "^3.3.4",
     "express": "^4.17.1",
     "express-validator": "^6.10.0",
