@@ -10,8 +10,11 @@
   },
   "author": "CRED-T10 team",
   "license": "ISC",
+  "engines": "",
   "dependencies": {
     "express": "^4.17.1",
+    "luhn": "^2.4.1",
+    "mongoose": "^5.11.19",
     "nodemon": "^2.0.7"
   }
 }
