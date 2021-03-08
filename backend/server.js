@@ -25,6 +25,7 @@ app.get('/', function (req, res) {
 app.use('/api', require('./routes/backendRoutes.js'));
 
 app.use('/api/users', require('./routes/users.js'));
+app.use('/api/auth', require('./routes/auth.js'));
 app.use('/api/cards', require('./routes/cards.js'));
 
 app.listen(PORT,()=>{
