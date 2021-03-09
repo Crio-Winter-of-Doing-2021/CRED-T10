@@ -8,8 +8,6 @@ const luhn = require("luhn");
 
 // Card Collection
 const Card = require('../models/cardSchema');
-// Transaction Collection
-const Transaction = require('../models/transactionSchema');
 
 // router for /cards
 router.route('/')
@@ -39,7 +37,6 @@ router.route('/')
     const is_valid_card = luhn.validate(cardNumber);
 
     if(!is_valid_card) {
-      // send error
       // TODO - change to make it appear gracefully on front-end
 
       res.status(400).json({message: "Invalid Card: Luhn Validation Failed"});
@@ -70,43 +67,6 @@ router.route('/')
   })
 ;
 
-
-// router for /cards/:id/pay
-router.route("/:id/pay")
-  // Payment of the bill (POST /cards/{id}/pay)
-  .post(async(req, res)=> {
-    // TODO - save transaction in transactions_schema
-
-
-    // add/deduct from outstanding amount in card_schema
-    var id = req.params.id;
-    await Card.findById(id, function (err, foundCard) {
-        // If card is found in database
-        if (!err) {
-          // Check if transaction type is debit/credit
-          if(req.body.transactionType == "debit") {
-            foundCard.outstanding_amount -= Number(req.body.amount);
-          }
-          else if(req.body.transactionType == "credit") {
-            foundCard.outstanding_amount += Number(req.body.amount);
-          }
-
-          // Save updated card outstanding amount in database
-          foundCard.save((err) => {
-            if(!err) {
-              res.status(200).json({message: "Outstanding amount of card updated successfully"});
-            } else {
-              res.status(500).json({message: "Error saving updated outstanding amount"});
-            }
-         });
-        }
-        // If card is not found in database
-        else {
-          res.status(404).json({message: "Card not found"});
-        }
-    });
-  })
-;
 
 
 

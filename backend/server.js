@@ -24,7 +24,12 @@ app.get('/', function (req, res) {
 
 app.use('/api', require('./routes/backendRoutes.js'));
 
+// Add a credit card (POST /cards, this includes verification)
+// Get list of cards associated for a user (GET /cards with userid)
 app.use('/cards', require('./routes/cards.js'));
+
+// Payment of the bill (POST /cards/{id}/pay)
+app.use('/cards', require('./routes/payment.js'));
 
 app.listen(PORT,()=>{
     console.log(`Backend Server running successfully on ${PORT}....\n`);
