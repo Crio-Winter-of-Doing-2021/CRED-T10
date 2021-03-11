@@ -10,7 +10,7 @@ const luhn = require("luhn");
 const Card = require('../models/cardSchema');
 
 // Transaction Collection
-const Transaction = require('../models/transactionSchema');
+const {Transaction} = require('../models/transactionSchema');
 
 // router for /cards/:id/pay
 router.route("/:id/pay")
