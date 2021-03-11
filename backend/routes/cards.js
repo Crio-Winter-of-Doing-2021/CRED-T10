@@ -8,15 +8,14 @@ const luhn = require("luhn");
 
 // Card Collection
 const Card = require('../models/cardSchema');
-// Transaction Collection
-const Transaction = require('../models/transactionSchema');
 
 // router for /cards
 router.route('/')
-  // Get list of cards associated for a user (GET /cards with userid)
+  // TODO - Get list of cards associated for a user (GET /cards with userid)
   .get(async(req, res)=> {
     res.status(200).json({msg:'Backend API route'});
   })
+
 
   // Add a credit card (POST /cards, this includes verification)
   .post(async(req, res)=> {
@@ -25,6 +24,8 @@ router.route('/')
     const cardNumber = req.body.cardNumber;
     const expiryMonth = req.body.expiryMonth;
     const expiryYear = req.body.expiryYear;
+    const outstandingAmount = req.body.outstandingAmount;
+    const creditLimit = req.body.creditLimit;
 
     // Check if length of card == 16 digit
     if (cardNumber.length != 16) {
@@ -36,7 +37,6 @@ router.route('/')
     const is_valid_card = luhn.validate(cardNumber);
 
     if(!is_valid_card) {
-      // send error
       // TODO - change to make it appear gracefully on front-end
 
       res.status(400).json({message: "Invalid Card: Luhn Validation Failed"});
@@ -47,7 +47,9 @@ router.route('/')
       name: cardName,
       account_number: cardNumber,
       expiry_month: expiryMonth,
-      expiry_year: expiryYear
+      expiry_year: expiryYear,
+      outstanding_amount: outstandingAmount,
+      credit_limit: creditLimit
     });
 
     // Save card in database and send response
@@ -66,30 +68,6 @@ router.route('/')
 ;
 
 
-//  ============= INCOMPLETE ROUTE
-
-// Payment of the bill (POST /cards/{id}/pay)
-router.route("/:id/pay")
-  .post(async(req, res)=> {
-    // save transaction in transactions_schema
-
-    // add/deduct from outstanding amount in card_schema
-    await Card.findOneAndUpdate({_id: req.params.id},
-      // Only for debits
-      {outstanding_amount: Number(foundCard.outstanding_amount) - Number(req.body.amount)},
-      function(err, foundCard) {
-        if(foundCard) {
-          res.status(200).send("Card found");
-        } else {
-          res.status(404).json({
-            status: "404",
-            message: "Card not found"
-          });
-        }
-      });
-
-  })
-;
 
 
 // Post statement (POST /cards/{id}/statements/{year}/{month}
