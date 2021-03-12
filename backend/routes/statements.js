@@ -72,7 +72,7 @@ const fetchStatementFromCardCompanies = async  (req)=>{
 router.post('/:year/:month', async(req,res)=>{
   
   let {statement,transactions} = await fetchStatementFromCardCompanies(req);
-  console.log(transactions);
+  //console.log(transactions);
   res.status(200).json({statement,transactions});
 
 })
@@ -81,20 +81,48 @@ router.post('/:year/:month', async(req,res)=>{
 // @desc      Fetch the statement summary for a particular year and month
 // @access    Private
 // Fetch the statement summary (GET /api/cards/{id}/statements/{year}/{month} )
-router.get(`/:year/:month`,auth,(req,res)=>{
-  console.log(req.originalUrl);
-  const id = req.originalUrl.split('/')[3];
+router.get(`/:year/:month`,auth, async (req,res)=>{
+  //console.log(req.originalUrl);
+  // Here Id is the Card Number
+  const id = Number(req.originalUrl.split('/')[3]);
+  
   const {year,month} = req.params;
-  console.log(id,year,month);
+  //console.log(id,year,month);
+  //console.log(req.user.id);
   const {cdate,cmonth,cyear} = getCurrentDate();
-  if(req.user.id!=id){
-    res.status(401).json({msg:'Invalid Credentials'});
+  // check if the particular user has this credit card or not
+  const user = await User.findById(req.user.id);
+  //console.log(user);
+  let checkIfUserHasThisCard =false;
+  for(let i=0;i<user.creditCards.length;i++){
+    // TODO: We need to first fetch the card from card object by using user.creditCards[i] as it's object Id, then we need to match the card number with the number in req.params.
+    if(user.creditCards[i]===id){
+      checkIfUserHasThisCard=true;
+      break;
+    }
+  }
+  if(!checkIfUserHasThisCard){
+    res.status(401).json({msg:'User Not Authorized'})
   }
   else if(cyear<year || (cyear===year && cmonth<month)){
     res.status(404).json({msg:'Data does not exist'});
   }
   else{
-    res.status(200).json({msg:'Works'});
+    const creditCardNumber = Number(id);
+    const monthAndYear = month.toString()+year.toString();
+    await Statement.findOne({creditCardNumber,monthAndYear},(err,statement)=>{
+      if(err){
+        //console.log(err);
+        res.status(500).json({msg:err});
+      }
+      if(!statement){
+        res.status(404).json({msg:'Statement Not Found'});
+      }
+      else{
+        //console.log(statement);
+        res.status(200).json({statement});
+      }
+    })
   }
   //console.log(req.user.id,'\n',req.originalUrl.split('/')[3],'\n');
   //console.log(req.params.year,req.params.month);
