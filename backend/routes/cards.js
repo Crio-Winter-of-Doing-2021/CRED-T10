@@ -5,20 +5,65 @@ const router = express.Router();
 
 const mongoose = require("mongoose");
 const luhn = require("luhn");
+const auth = require('../middleware/auth');
 
 // Card Collection
 const Card = require('../models/cardSchema');
+// Users Collection
+const User = require('../models/Users');
 
-// router for /cards
+// router for /api/cards
 router.route('/')
-  // TODO - Get list of cards associated for a user (GET /cards with userid)
-  .get(async(req, res)=> {
-    res.status(200).json({msg:'Backend API route'});
+    // TODO - Get list of cards associated for a user (GET /api/cards with userid)
+  .get(auth, async(req, res)=> {
+    // req.user.id is coming from auth middleware
+    const curLoggedInUserId = req.user.id;
+    console.log(curLoggedInUserId);
+
+
+    await User.findById(curLoggedInUserId, function(err, foundUser) {
+      if (!err) {
+        // Get Card IDs for current user - creditCards
+        const curUserCards = foundUser.creditCards;
+
+        const cardList = [];
+
+        for (const [key, cardId] of Object.entries(curUserCards)) {
+          Card.findById(cardId, function(err, foundCard) {
+            if(!err) {
+              const cardName = foundCard.name;
+              const cardNumber = foundCard.account_number;
+              const expiryMonth = foundCard.expiry_month;
+              const expiryYear = foundCard.expiry_year;
+
+              const cardInfo = {
+                name: cardName,
+                account_number: cardNumber,
+                expiry_month: expiryMonth,
+                expiry_year: expiryYear
+              };
+
+              cardList.push(cardInfo);
+
+              // console.log(cardInfo);
+            }
+            else {
+              res.status(400).json({message: "Card Id Not found for current user"});
+            }
+          });
+        }
+        console.log(cardList);
+        res.status(200).json(cardList);
+      }
+      else {
+        res.status(404).json({user_id: curLoggedInUserId, message: "User not found!"});
+      }
+    });
   })
 
 
-  // Add a credit card (POST /cards, this includes verification)
-  .post(async(req, res)=> {
+  // Add a credit card (POST /api/cards, this includes verification)
+  .post(auth, async(req, res)=> {
     // Parameters got when user posts from front-end
     const cardName = req.body.cardName;
     const cardNumber = req.body.cardNumber;
@@ -58,25 +103,34 @@ router.route('/')
         const card_id = saved_card._id;
         // TODO - save card_id in userInfo schema of current logged_in user
 
+        const curLoggedInUserId = req.user.id;
+        console.log(curLoggedInUserId);
+
+        User.findById(curLoggedInUserId, function(err, foundUser) {
+          if(!err) {
+            // Push new card_id in User collection
+            foundUser.creditCards.push(card_id);
+            // Save updated user with newly pushed creditCard id in database
+            foundUser.save((err) => {
+              if(!err) {
+                // res.status(200).json({_id: card_id, message: "Added new card for current user successfully"});
+              } else {
+                res.status(500).json({message: "DB Error: Unable to add new card in database"});
+              }
+           });
+          }
+          else {
+            res.status(400).json({message: "Card Not found for current user"});
+          }
+        });
 
         res.status(200).json({_id: card_id, message: "Card saved successfully"});
+
       } else {
         console.log(err);
       }
     });
   })
 ;
-
-
-
-
-// Post statement (POST /cards/{id}/statements/{year}/{month}
-
-
-
-// Fetch the statement summary (GET /cards/{id}/statements/{year}/{month}
-
-
-
 
 module.exports = router;
