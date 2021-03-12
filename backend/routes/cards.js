@@ -6,19 +6,21 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const luhn = require("luhn");
 
+const auth = require('../middleware/auth');
 // Card Collection
 const Card = require('../models/cardSchema');
+const User = require('../models/Users');
 
 // router for /cards
-router.route('/')
   // TODO - Get list of cards associated for a user (GET /cards with userid)
-  .get(async(req, res)=> {
+  router.get('/',auth,async(req, res)=> {
     res.status(200).json({msg:'Backend API route'});
   })
 
 
   // Add a credit card (POST /cards, this includes verification)
-  .post(async(req, res)=> {
+  router.post('/',auth,async(req, res)=> {
+    console.log(req.user.id);
     // Parameters got when user posts from front-end
     const cardName = req.body.cardName;
     const cardNumber = req.body.cardNumber;
@@ -31,6 +33,7 @@ router.route('/')
     if (cardNumber.length != 16) {
       // TODO - change to make it appear gracefully on front-end
       res.status(400).json({message: "Invalid Card: Card number must be of 16 digits"});
+      return;
     }
 
     // Do Luhn Validation of card
@@ -40,6 +43,7 @@ router.route('/')
       // TODO - change to make it appear gracefully on front-end
 
       res.status(400).json({message: "Invalid Card: Luhn Validation Failed"});
+      return;
     }
 
     // Store card in MongoDB database
@@ -53,11 +57,13 @@ router.route('/')
     });
 
     // Save card in database and send response
-    await card.save((err, saved_card)=> {
+    await card.save(async (err, saved_card)=> {
       if(!err) {
         const card_id = saved_card._id;
-        // TODO - save card_id in userInfo schema of current logged_in user
-
+        const user = await User.findById(req.user.id);
+        console.log(user);
+        user.creditCards.push(card_id);
+        await User.updateOne({_id:req.user.id},user);
 
         res.status(200).json({_id: card_id, message: "Card saved successfully"});
       } else {
@@ -66,16 +72,6 @@ router.route('/')
     });
   })
 ;
-
-
-
-
-// Post statement (POST /cards/{id}/statements/{year}/{month}
-
-
-
-// Fetch the statement summary (GET /cards/{id}/statements/{year}/{month}
-
 
 
 

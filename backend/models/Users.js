@@ -22,9 +22,12 @@ userSchema = mongoose.Schema({
     type: String,
     required: true
 },
-//TODO: change this to ObjectId not number
-//creditCards:[{type:Mongoose.Schema.Types.ObjectId}],
-  creditCards: [{type:Number}],
+  creditCards:[
+    {
+      type:mongoose.Schema.Types.ObjectId,
+      ref: 'Card'
+    }
+  ],
   }
 );
 

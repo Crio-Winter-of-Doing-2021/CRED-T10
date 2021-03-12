@@ -11,6 +11,7 @@ const {AccountSummary,PaymentInformation,RewardSummary,AccountActivity,TotalsYea
 //  Users collection
 const User = require('../models/Users');
 const {Transaction} = require('../models/transactionSchema');
+const Card = require('../models/cardSchema');
 
 
 let getCurrentDate = ()=>{
@@ -59,7 +60,22 @@ const fetchStatementFromCardCompanies = async  (req)=>{
   totalsYearToDate = new TotalsYearToDate(totalsYearToDate);
   statement = new Statement(statement);
   await statement.save();
-  await Transaction.insertMany(transactions);
+  //let transactionIdArray = [];
+  await Transaction.insertMany(transactions, async (err,transactionArr)=>{
+    if(err){
+      console.log(err);
+    }
+    else{
+      const creditCard = await Card.findOne({account_number:creditCardNumber});
+      transactionArr.map((ele)=>{
+        creditCard.transactions.push(ele._id);
+        return ele;
+      });
+      console.log(creditCard);
+      await Card.updateOne({account_number:creditCardNumber},creditCard);
+    }
+  });
+  
   return {statement,transactions};
 }
 
@@ -82,24 +98,25 @@ router.post('/:year/:month', async(req,res)=>{
 // @access    Private
 // Fetch the statement summary (GET /api/cards/{id}/statements/{year}/{month} )
 router.get(`/:year/:month`,auth, async (req,res)=>{
-  //console.log(req.originalUrl);
   // Here Id is the Card Number
   const id = Number(req.originalUrl.split('/')[3]);
-  
   const {year,month} = req.params;
-  //console.log(id,year,month);
-  //console.log(req.user.id);
+
   const {cdate,cmonth,cyear} = getCurrentDate();
   // check if the particular user has this credit card or not
-  const user = await User.findById(req.user.id);
-  //console.log(user);
+  const user = 
+    await User.findById(req.user.id)
+                      .populate("creditCards");
+  
   let checkIfUserHasThisCard =false;
   for(let i=0;i<user.creditCards.length;i++){
-    // TODO: We need to first fetch the card from card object by using user.creditCards[i] as it's object Id, then we need to match the card number with the number in req.params.
-    if(user.creditCards[i]===id){
-      checkIfUserHasThisCard=true;
-      break;
-    }
+    if(
+      user.creditCards[i].account_number === id
+      )
+        {
+        checkIfUserHasThisCard=true;
+        break;
+        }
   }
   if(!checkIfUserHasThisCard){
     res.status(401).json({msg:'User Not Authorized'})
