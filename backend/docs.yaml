@@ -1,0 +1,41 @@
+swagger: '2.0'
+info:
+  description: 'CRED T-10 backend endpoints'
+  version: '1.0.0'
+  title: 'CRED T-10 API'
+  contact:
+    email: 'prateek10023@gmail.com'
+host: 'localhost:8081/api'
+basePath: ''
+tags:
+  - name: 'backend'
+    description: 'Backend routes'
+  - name: 'bankRequest'
+    description: 'Bank routes'
+schemes:
+  - 'https'
+  - 'http'
+paths:
+  /:
+    get:
+      tags:
+        - 'backend'
+      summary: 'Check if backend is functional'
+      description: ''
+      operationId: 'checkIfBackendIsFunctional'
+      produces:
+        - 'application/json'
+      responses:
+        '200':
+          description: 'succesful operation'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '500':
+          description: 'Server Error'
+
+definitions:
+  MessageObject:
+    type: 'object'
+    properties:
+      msg:
+        type: 'string'

@@ -3,12 +3,23 @@
 // Require Modules
 const express = require('express');
 const connectDB = require('./database/mongoUtil');
+const cors = require('cors');
 
 // Create App
 const app = express();
 
 // Connect to database
 connectDB();
+
+// cors
+app.use(cors());
+
+// api-docs-swagger
+const swaggerUi = require("swagger-ui-express");
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./docs.yaml');
+
+app.use('/api/swagger-ui/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Port configuration for local and cloud databases
 const PORT = process.env.PORT || 8081;
