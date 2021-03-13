@@ -1,3 +1,5 @@
+//jshint esversion: 8
+
 const mongoose  = require('mongoose');
 const { transactionSchema } = require('./transactionSchema');
 
@@ -175,7 +177,7 @@ const TotalsYearToDateSchema = mongoose.Schema(
       default: 0
     }
   }
-)
+);
 
 const StatementSchema = mongoose.Schema(
   {
