@@ -5,25 +5,53 @@ const router = express.Router();
 
 const mongoose = require("mongoose");
 const luhn = require("luhn");
+const auth = require('../middleware/auth');
 
 const auth = require('../middleware/auth');
 // Card Collection
 const Card = require('../models/cardSchema');
+// Users Collection
 const User = require('../models/Users');
 
-// router for /cards
-  // TODO - Get list of cards associated for a user (GET /cards with userid)
-  router.get('/',auth,async(req, res)=> {
-    res.status(200).json({msg:'Backend API route'});
-  })
+// router for /api/cards
+router.route('/')
+  // Get list of cards associated for a user (GET /api/cards with userid)
+  .get(auth, async(req, res)=> {
+    // req.user.id is coming from auth middleware
+    const curLoggedInUserId = req.user.id;
+    console.log(curLoggedInUserId);
+
+    const user = await User.findById(curLoggedInUserId).populate("creditCards");
+    const creditCardList = user.creditCards;
+
+    const finalCardList = [];
+
+    creditCardList.forEach(function (curCard) {
+      const cardName = curCard.name;
+      const cardNumber = curCard.account_number;
+      const expiryMonth = curCard.expiry_month;
+      const expiryYear = curCard.expiry_year;
+
+      const cardInfo = {
+        name: cardName,
+        account_number: cardNumber,
+        expiry_month: expiryMonth,
+        expiry_year: expiryYear
+      };
+
+      finalCardList.push(cardInfo);
+    });
+
+    res.status(200).send(finalCardList);
+  });
 
 
-  // Add a credit card (POST /cards, this includes verification)
-  router.post('/',auth,async(req, res)=> {
+  // Add a credit card (POST /api/cards, this includes verification)
+  router.post('/', auth, async(req, res)=> {
     console.log(req.user.id);
     // Parameters got when user posts from front-end
     const cardName = req.body.cardName;
-    const cardNumber = req.body.cardNumber;
+    const cardNumber = req.body.cardNumber.toString();
     const expiryMonth = req.body.expiryMonth;
     const expiryYear = req.body.expiryYear;
     const outstandingAmount = req.body.outstandingAmount;
@@ -49,7 +77,7 @@ const User = require('../models/Users');
     // Store card in MongoDB database
     const card = new Card({
       name: cardName,
-      account_number: cardNumber,
+      account_number: Number(cardNumber),
       expiry_month: expiryMonth,
       expiry_year: expiryYear,
       outstanding_amount: outstandingAmount,
@@ -72,7 +100,5 @@ const User = require('../models/Users');
     });
   })
 ;
-
-
 
 module.exports = router;

@@ -30,7 +30,7 @@ app.use('/api/cards', require('./routes/cards.js'));
 app.use(`/api/cards/:id/statements`, require('./routes/statements.js'));
 
 // Payment of the bill (POST /cards/{id}/pay)
-app.use('/api/cards', require('./routes/payment.js'));
+app.use('/api/cards/:id/pay', require('./routes/payment.js'));
 
 app.listen(PORT,()=>{
     console.log(`Backend Server running successfully on ${PORT}....\n`);
