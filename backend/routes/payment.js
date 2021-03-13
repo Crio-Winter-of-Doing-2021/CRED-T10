@@ -4,13 +4,14 @@ const express = require('express');
 const router = express.Router();
 
 const mongoose = require("mongoose");
+const auth = require('../middleware/auth');
 
 // Card Collection
 const Card = require('../models/cardSchema');
 
 // router for /cards/:id/pay
-router.post("/", async(req, res)=> {
-    // Get the url from :id parameter in server.js which is sent by user 
+router.post("/", auth, async(req, res)=> {
+    // Get the url from :id parameter in server.js which is sent by user
     const id = req.originalUrl.split('/')[3];
     await Card.findById(id, function (err, foundCard) {
         // If card is found in database
