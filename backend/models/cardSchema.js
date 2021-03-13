@@ -16,6 +16,7 @@ cardSchema = mongoose.Schema({
     },
     expiry_month: { type: Number, required: true, min: 1, max: 12 },
     expiry_year: { type: Number, required: true },
+    cvv :{ type: String, required: true},
     credit_limit: {type: Number, required: false },
     outstanding_amount: {type: Number, required: false},
     transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'transactions', required: false }]

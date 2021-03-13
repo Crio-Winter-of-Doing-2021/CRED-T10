@@ -3,11 +3,11 @@
 const express = require('express');
 const router = express.Router();
 
-const mongoose = require("mongoose");
-const luhn = require("luhn");
-const auth = require('../middleware/auth');
+const mongoose = require("mongoose"); // ODM for mongoDB
+const luhn = require("luhn"); // for luhn validation of cards
+const bcrypt =require('bcryptjs'); // for encryption
 
-
+const auth = require('../middleware/auth');// for authentication
 // Card Collection
 const Card = require('../models/cardSchema');
 // Users Collection
@@ -19,7 +19,7 @@ router.route('/')
   .get(auth, async(req, res)=> {
     // req.user.id is coming from auth middleware
     const curLoggedInUserId = req.user.id;
-    console.log(curLoggedInUserId);
+    //console.log(curLoggedInUserId);
 
     const user = await User.findById(curLoggedInUserId).populate("creditCards");
     const creditCardList = user.creditCards;
@@ -48,12 +48,13 @@ router.route('/')
 
   // Add a credit card (POST /api/cards, this includes verification)
   router.post('/', auth, async(req, res)=> {
-    console.log(req.user.id);
+    //console.log(req.user.id);
     // Parameters got when user posts from front-end
     const cardName = req.body.cardName;
     const cardNumber = req.body.cardNumber.toString();
     const expiryMonth = req.body.expiryMonth;
     const expiryYear = req.body.expiryYear;
+    const cvv = req.body.cvv.toString();
     const outstandingAmount = req.body.outstandingAmount;
     const creditLimit = req.body.creditLimit;
 
@@ -61,6 +62,13 @@ router.route('/')
     if (cardNumber.length != 16) {
       // TODO - change to make it appear gracefully on front-end
       res.status(400).json({msg: "Invalid Card: Card number must be of 16 digits"});
+      return;
+    }
+
+    // Check if the cvv of card is 3 digit
+    if(cvv.length !=3){
+      // TODO - change to make it appear gracefully on front-end
+      res.status(400).json({msg: "Invalid cvv: cvv should contain only three digits"})
       return;
     }
 
@@ -80,16 +88,21 @@ router.route('/')
       account_number: Number(cardNumber),
       expiry_month: expiryMonth,
       expiry_year: expiryYear,
+      cvv: cvv,
       outstanding_amount: outstandingAmount,
       credit_limit: creditLimit
     });
+
+    // encrypt the cvv while storing it in database
+    const salt = await bcrypt.genSalt(10);
+    card.cvv =  await bcrypt.hash(cvv,salt);
 
     // Save card in database and send response
     await card.save(async (err, saved_card)=> {
       if(!err) {
         const card_id = saved_card._id;
         const user = await User.findById(req.user.id);
-        console.log(user);
+        //console.log(user);
         user.creditCards.push(card_id);
         await User.updateOne({_id:req.user.id},user);
 
