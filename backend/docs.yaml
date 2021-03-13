@@ -32,6 +32,159 @@ paths:
             $ref: '#/definitions/MessageObject'
         '500':
           description: 'Server Error'
+  /users:
+    post:
+      tags:
+        - 'backend'
+      summary: 'register a user'
+      description: 'resgister a user and get the auth token'
+      operationId: 'registerUser'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'input fields for registering a user'
+          required: true
+          schema:
+            $ref: '#/definitions/RegisterUser'
+      responses:
+        '200':
+          description: 'User Registered'
+          schema:
+            $ref: '#/definitions/AuthTokenResponse'
+        '409':
+          description: 'Email already exists'
+        '422':
+          description: 'Body Parameters are invalid, cannot register'
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '500':
+          description: 'Server Error'
+  /auth:
+    post:
+      tags:
+        - 'backend'
+      summary: 'Login a user'
+      description: 'Login a user and get the auth token'
+      operationId: 'loginUser'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'input fields for registering a user'
+          required: true
+          schema:
+            $ref: '#/definitions/LoginUser'
+      responses:
+        '200':
+          description: 'Login Successful'
+          schema:
+            $ref: '#/definitions/AuthTokenResponse'
+        '403':
+          description: 'Invalid Credentials'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '422':
+          description: 'Body Parameters are invalid, cannot login'
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '500':
+          description: 'Server Error'
+    get:
+      tags:
+        - 'backend'
+      summary: 'Get User details'
+      description: 'gets the user details such as firstName,lastName,email,creditCards'
+      operationId: 'getUserDetails'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'header'
+          name: 'x-auth-token'
+          description: 'jwt authorization token'
+          required: true
+          type: 'string'
+      responses:
+        '200':
+          description: 'succesful operation'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/UserInformationSent'
+        '401':
+          description: 'unauthorized access'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '500':
+          description: 'Server Error'
+  /cards:
+    get:
+      tags:
+        - 'backend'
+      summary: 'Get cards of user'
+      description: 'gets all the cards of user'
+      operationId: 'getAllCards'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'header'
+          name: 'x-auth-token'
+          description: 'jwt authorization token'
+          required: true
+          type: 'string'
+      responses:
+        '200':
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/CardObjectSent'
+        '401':
+          description: 'unauthorized access'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '500':
+          description: 'Server Error'
+    post:
+      tags:
+        - 'backend'
+      summary: 'Add a card for a user'
+      description: 'Adds a credit card for a user'
+      operationId: 'postCard'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'header'
+          name: 'x-auth-token'
+          description: 'jwt authorization token'
+          required: true
+          type: 'string'
+        - in: 'body'
+          name: 'body'
+          description: 'input fields for adding a card'
+          required: true
+          schema:
+            $ref: '#/definitions/CardObjectAdd'
+      responses:
+        '200':
+          description: 'Card saved'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '400':
+          description: 'Invalid Card/ cvv'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '401':
+          description: 'unauthorized access'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '500':
+          description: 'Server Error'
 
 definitions:
   MessageObject:
@@ -39,3 +192,102 @@ definitions:
     properties:
       msg:
         type: 'string'
+  AuthTokenResponse:
+    type: 'object'
+    properties:
+      token:
+        type: 'string'
+  RegisterUser:
+    type: 'object'
+    required:
+      - 'firstName'
+      - 'lastName'
+      - 'email'
+      - 'password'
+    properties:
+      firstName:
+        type: 'string'
+      lastName:
+        type: 'string'
+      email:
+        type: 'string'
+        format: 'email'
+      password:
+        type: 'string'
+  LoginUser:
+    type: 'object'
+    required:
+      - 'email'
+      - 'password'
+    properties:
+      email:
+        type: 'string'
+        format: 'email'
+      password:
+        type: 'string'
+  UserInformationSent:
+    type: 'object'
+    properties:
+      firstName:
+        type: 'string'
+      lastName:
+        type: 'string'
+      email:
+        type: 'string'
+        format: 'email'
+      creditCards:
+        type: 'array'
+        items:
+          type: 'string'
+  CardObjectSent:
+    type: 'object'
+    properties:
+      name:
+        type: 'string'
+      account_number:
+        type: 'number'
+      expiry_month:
+        type: 'number'
+      expiry_year:
+        type: 'number'
+  CardObjectAdd:
+    type: 'object'
+    required:
+      - 'cardName'
+      - 'cardNumber'
+      - 'expiryMonth'
+      - 'expiryYear'
+      - 'cvv'
+    properties:
+      cardName:
+        type: 'string'
+      cardNumber:
+        type: 'number'
+      expiryMonth:
+        type: 'number'
+      expiryYear:
+        type: 'number'
+      outStandingAmount:
+        type: 'number'
+      creditLimit:
+        type: 'number'
+      cvv:
+        type: 'number'
+  ValidationErrorMessage:
+    type: 'object'
+    properties:
+      value:
+        type: 'string'
+      msg:
+        type: 'string'
+      param:
+        type: 'string'
+      location:
+        type: 'string'
+  ValidationError:
+    type: 'object'
+    properties:
+      errors:
+        type: 'array'
+        items:
+          $ref: '#/definitions/ValidationErrorMessage'

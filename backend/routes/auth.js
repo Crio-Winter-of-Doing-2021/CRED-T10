@@ -12,7 +12,7 @@ const auth = require('../middleware/auth');
 const User = require('../models/Users');
 
 // @route     GET api/auth
-// @desc      Get Logged in user
+// @desc      Get user details
 // @access    Private
 router.get('/',auth,async (req,res)=>{
   try {
@@ -39,17 +39,17 @@ router.post('/',[
   ], async (req,res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
-      return res.status(400).json({errors : errors.array() });
+      return res.status(422).json({errors : errors.array() });
     }
   const {email,password} = req.body;
   try {
     let user = await User.findOne({ email });
     if(!user){
-      return res.status(400).json({msg: 'Invalid Credentials' });
+      return res.status(403).json({msg: 'Invalid Credentials' });
     }
     const isMatch = await bcrypt.compare(password,user.password);
     if(!isMatch){
-      return res.status(400).json({msg: 'Invalid Credentials'});
+      return res.status(403).json({msg: 'Invalid Credentials'});
     }
 
     //console.log('USER ID:' ,user.id);

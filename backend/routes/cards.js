@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const luhn = require("luhn");
 const auth = require('../middleware/auth');
 
-const auth = require('../middleware/auth');
+
 // Card Collection
 const Card = require('../models/cardSchema');
 // Users Collection
@@ -60,7 +60,7 @@ router.route('/')
     // Check if length of card == 16 digit
     if (cardNumber.length != 16) {
       // TODO - change to make it appear gracefully on front-end
-      res.status(400).json({message: "Invalid Card: Card number must be of 16 digits"});
+      res.status(400).json({msg: "Invalid Card: Card number must be of 16 digits"});
       return;
     }
 
@@ -70,7 +70,7 @@ router.route('/')
     if(!is_valid_card) {
       // TODO - change to make it appear gracefully on front-end
 
-      res.status(400).json({message: "Invalid Card: Luhn Validation Failed"});
+      res.status(400).json({msg: "Invalid Card: Luhn Validation Failed"});
       return;
     }
 
@@ -93,7 +93,7 @@ router.route('/')
         user.creditCards.push(card_id);
         await User.updateOne({_id:req.user.id},user);
 
-        res.status(200).json({_id: card_id, message: "Card saved successfully"});
+        res.status(200).json({id: card_id, msg: "Card saved successfully"});
       } else {
         console.log(err);
       }
