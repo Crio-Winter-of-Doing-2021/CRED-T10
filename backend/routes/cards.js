@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const luhn = require("luhn");
 const auth = require('../middleware/auth');
 
+const auth = require('../middleware/auth');
 // Card Collection
 const Card = require('../models/cardSchema');
 // Users Collection
