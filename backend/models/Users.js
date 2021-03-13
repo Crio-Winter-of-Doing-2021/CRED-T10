@@ -22,7 +22,12 @@ userSchema = mongoose.Schema({
     type: String,
     required: true
 },
-  creditCards: [{type:mongoose.Schema.Types.ObjectId}],
+  creditCards:[
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Card'
+    }
+  ],
   }
 );
 

@@ -14,51 +14,34 @@ const User = require('../models/Users');
 
 // router for /api/cards
 router.route('/')
-    // TODO - Get list of cards associated for a user (GET /api/cards with userid)
+  // Get list of cards associated for a user (GET /api/cards with userid)
   .get(auth, async(req, res)=> {
     // req.user.id is coming from auth middleware
     const curLoggedInUserId = req.user.id;
     console.log(curLoggedInUserId);
 
+    const user = await User.findById(curLoggedInUserId).populate("creditCards");
+    const creditCardList = user.creditCards;
 
-    await User.findById(curLoggedInUserId, function(err, foundUser) {
-      if (!err) {
-        // Get Card IDs for current user - creditCards
-        const curUserCards = foundUser.creditCards;
+    const finalCardList = [];
 
-        const cardList = [];
+    creditCardList.forEach(function (curCard) {
+      const cardName = curCard.name;
+      const cardNumber = curCard.account_number;
+      const expiryMonth = curCard.expiry_month;
+      const expiryYear = curCard.expiry_year;
 
-        for (const [key, cardId] of Object.entries(curUserCards)) {
-          Card.findById(cardId, function(err, foundCard) {
-            if(!err) {
-              const cardName = foundCard.name;
-              const cardNumber = foundCard.account_number;
-              const expiryMonth = foundCard.expiry_month;
-              const expiryYear = foundCard.expiry_year;
+      const cardInfo = {
+        name: cardName,
+        account_number: cardNumber,
+        expiry_month: expiryMonth,
+        expiry_year: expiryYear
+      };
 
-              const cardInfo = {
-                name: cardName,
-                account_number: cardNumber,
-                expiry_month: expiryMonth,
-                expiry_year: expiryYear
-              };
-
-              cardList.push(cardInfo);
-
-              // console.log(cardInfo);
-            }
-            else {
-              res.status(400).json({message: "Card Id Not found for current user"});
-            }
-          });
-        }
-        console.log(cardList);
-        res.status(200).json(cardList);
-      }
-      else {
-        res.status(404).json({user_id: curLoggedInUserId, message: "User not found!"});
-      }
+      finalCardList.push(cardInfo);
     });
+
+    res.status(200).send(finalCardList);
   })
 
 
@@ -101,7 +84,7 @@ router.route('/')
     await card.save((err, saved_card)=> {
       if(!err) {
         const card_id = saved_card._id;
-        // TODO - save card_id in userInfo schema of current logged_in user
+        // save card_id in userInfo schema of current logged_in user
 
         const curLoggedInUserId = req.user.id;
         console.log(curLoggedInUserId);
@@ -112,9 +95,7 @@ router.route('/')
             foundUser.creditCards.push(card_id);
             // Save updated user with newly pushed creditCard id in database
             foundUser.save((err) => {
-              if(!err) {
-                // res.status(200).json({_id: card_id, message: "Added new card for current user successfully"});
-              } else {
+              if(err) {
                 res.status(500).json({message: "DB Error: Unable to add new card in database"});
               }
            });
