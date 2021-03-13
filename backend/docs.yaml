@@ -111,7 +111,7 @@ paths:
           description: 'succesful operation'
           type: 'object'
           schema:
-            $ref: '#/definitions/UserInformationSent'
+            $ref: '#/definitions/GetUserInformation'
         '401':
           description: 'unauthorized access'
           type: 'object'
@@ -139,7 +139,7 @@ paths:
           schema:
             type: 'array'
             items:
-              $ref: '#/definitions/CardObjectSent'
+              $ref: '#/definitions/GetCardObject'
         '401':
           description: 'unauthorized access'
           type: 'object'
@@ -166,7 +166,7 @@ paths:
           description: 'input fields for adding a card'
           required: true
           schema:
-            $ref: '#/definitions/CardObjectAdd'
+            $ref: '#/definitions/PostCardObject'
       responses:
         '200':
           description: 'Card saved'
@@ -225,7 +225,7 @@ definitions:
         format: 'email'
       password:
         type: 'string'
-  UserInformationSent:
+  GetUserInformation:
     type: 'object'
     properties:
       firstName:
@@ -239,7 +239,7 @@ definitions:
         type: 'array'
         items:
           type: 'string'
-  CardObjectSent:
+  GetCardObject:
     type: 'object'
     properties:
       name:
@@ -250,7 +250,7 @@ definitions:
         type: 'number'
       expiry_year:
         type: 'number'
-  CardObjectAdd:
+  PostCardObject:
     type: 'object'
     required:
       - 'cardName'
