@@ -13,19 +13,14 @@ const Card = require('../models/cardSchema');
 router.post("/", auth, async(req, res)=> {
     // Get the url from :id parameter in server.js which is sent by user
     const id = req.originalUrl.split('/')[3];
-    await Card.findById(id, function (err, foundCard) {
+    await Card.findById(id, async (err, foundCard) => {
         // If card is found in database
         if (!err) {
-          // Update outstanding amount on backend
-          foundCard.outstanding_amount -= Number(req.body.amount);
-          // Save updated card outstanding amount in database
-          foundCard.save((err) => {
-            if(!err) {
-              res.status(200).json({message: "Bill paid successfully"});
-            } else {
-              res.status(500).json({message: "Error in paying bill"});
-            }
-          });
+          foundCard.outstanding_amount += Number(req.body.amount);
+
+          // Update outstandingAmount in cards Collection
+          await Card.updateOne({_id: id}, foundCard);
+          res.status(200).json({message: "Bill Payment Successful!", updatedOutstandingAmount: foundCard.outstanding_amount});
         }
         // If card is not found in database
         else {

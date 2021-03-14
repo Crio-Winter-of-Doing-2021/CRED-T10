@@ -68,7 +68,7 @@ router.route('/')
     // Check if the cvv of card is 3 digit
     if(cvv.length !=3){
       // TODO - change to make it appear gracefully on front-end
-      res.status(400).json({msg: "Invalid cvv: cvv should contain only three digits"})
+      res.status(400).json({msg: "Invalid cvv: cvv should contain only three digits"});
       return;
     }
 
