@@ -1,6 +1,11 @@
-import React from 'react';
-
+import { useEffect, useContext } from 'react';
+import AuthContext from '../../context/auth/authContext';
 const NotFound = () => {
+  const authContext = useContext(AuthContext);
+  const { logout } = authContext;
+  useEffect(() => {
+    logout();
+  }, []);
   return (
     <div>
       {' '}

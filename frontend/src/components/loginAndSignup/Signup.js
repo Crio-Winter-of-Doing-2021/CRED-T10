@@ -1,7 +1,28 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useLayoutEffect, useContext } from 'react';
+import AuthContext from '../../context/auth/authContext';
+const Signup = (props) => {
+  const authContext = useContext(AuthContext);
+  const { register, isAuthenticated, logout } = authContext;
+  const [user, setUser] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
 
-const Signup = ({ user, setUser }) => {
-  const isRegistered = false;
+  useEffect(() => {
+    let mounted = true;
+    if (mounted && isAuthenticated) {
+      props.history.push('/');
+    } else {
+      logout();
+    }
+
+    return () => (mounted = false);
+    // eslint-disable-next-line
+  }, [isAuthenticated, props.history]);
+
   const onChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
     if (e.target.name === 'confirmPassword') {
@@ -15,7 +36,9 @@ const Signup = ({ user, setUser }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(user);
-    console.log(isRegistered);
+    delete user.confirmPassword;
+    console.log(user);
+    register(user);
     setUser({
       firstName: '',
       lastName: '',
@@ -33,28 +56,26 @@ const Signup = ({ user, setUser }) => {
       onSubmit={handleSubmit}
       onInvalidCapture={handleInvalidCapture}
     >
-      {!isRegistered && (
-        <>
-          <input
-            type="text"
-            placeholder="First Name"
-            name="firstName"
-            value={user.firstName}
-            onChange={onChange}
-            required
-            maxLength={20}
-          />
-          <input
-            type="text"
-            placeholder="Last Name"
-            name="lastName"
-            value={user.lastName}
-            onChange={onChange}
-            required
-            maxLength={20}
-          />
-        </>
-      )}
+      <>
+        <input
+          type="text"
+          placeholder="First Name"
+          name="firstName"
+          value={user.firstName}
+          onChange={onChange}
+          required
+          maxLength={20}
+        />
+        <input
+          type="text"
+          placeholder="Last Name"
+          name="lastName"
+          value={user.lastName}
+          onChange={onChange}
+          required
+          maxLength={20}
+        />
+      </>
       <>
         <input
           type="email"
@@ -72,22 +93,22 @@ const Signup = ({ user, setUser }) => {
           placeholder="Password"
           onChange={onChange}
           maxLength={20}
+          minLength={6}
           required
         />
       </>
-      {!isRegistered && (
-        <>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={user.confirmPassword}
-            placeholder="Confirm Password"
-            onChange={onChange}
-            maxLength={20}
-            required
-          />
-        </>
-      )}
+      <>
+        <input
+          type="password"
+          name="confirmPassword"
+          value={user.confirmPassword}
+          placeholder="Confirm Password"
+          onChange={onChange}
+          maxLength={20}
+          minLength={6}
+          required
+        />
+      </>
       <>
         <button type="submit" className="formOptions">
           Submit

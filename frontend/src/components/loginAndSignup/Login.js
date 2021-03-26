@@ -1,10 +1,34 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import AuthContext from '../../context/auth/authContext';
+import { LOGOUT } from '../../context/types';
 
-const Login = ({ user, setUser }) => {
+const Login = (props) => {
   const authContext = useContext(AuthContext);
-  const { login } = authContext;
+
+  const { login, error, clearErrors, isAuthenticated, logout } = authContext;
+
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted && isAuthenticated) {
+      props.history.push('/');
+    } else {
+      logout();
+    }
+
+    // if (error === 'Invalid Credentials') {
+    //   //setAlert(error, 'danger');
+    //   clearErrors();
+    // }
+    return () => (mounted = false);
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, props.history]);
+  const [user, setUser] = useState({
+    email: '',
+    password: '',
+  });
+
   const onChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };

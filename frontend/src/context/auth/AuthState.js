@@ -35,7 +35,7 @@ const AuthState = (props) => {
   const loadUser = async () => {
     // add header for auth and load user from backend
     if (localStorage.token) {
-      setAuthToken(localStorage.token);
+      setAuthToken(localStorage.getItem('token'));
     }
     try {
       const res = await axios.get(backendApi.local + '/api/auth');
@@ -45,13 +45,37 @@ const AuthState = (props) => {
         payload: res.data,
       });
     } catch (err) {
+      console.log(err, 'auth error');
       dispatch({ type: AUTH_ERROR });
     }
+    console.log('load user');
   };
+
   // register user
-  const register = () => {
-    console.log('register');
+  const register = async (userData) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      const res = await axios.post(
+        backendApi.local + '/api/users',
+        userData,
+        config
+      );
+      console.log(res.data);
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data,
+      });
+      console.log('REGISTRATION DONE', userData);
+      console.log('register');
+    } catch (err) {
+      console.log('Server error');
+    }
   };
+
   // login user
   const login = async (userData) => {
     const config = {
@@ -71,7 +95,7 @@ const AuthState = (props) => {
         type: LOGIN_SUCCESS,
         payload: res.data,
       });
-      console.log('Here', res.data);
+      console.log('USER LOGGED IN');
       loadUser();
     } catch (err) {
       console.log('ERROR');
@@ -83,11 +107,15 @@ const AuthState = (props) => {
   };
   // logout user
   const logout = () => {
-    console.log('logout');
+    dispatch({
+      type: LOGOUT,
+    });
   };
   // clear errors
   const clearErrors = () => {
-    console.log('clearErrors');
+    dispatch({
+      type: CLEAR_ERRORS,
+    });
   };
 
   // return context provider

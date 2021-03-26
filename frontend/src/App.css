@@ -400,6 +400,16 @@ table th {
   transition: opacity 1000ms ease-in;
 }
 
+/*info-cards*/
+.info-card {
+  background-color: cornflowerblue;
+  margin-top: 5px;
+  padding-left: 5px;
+  width: 200px;
+  border: 2 px solid #9e9d89;
+  border-radius: 5px;
+}
+
 /* Mobile Styles */
 @media (max-width: 700px) {
   .hide-sm {
