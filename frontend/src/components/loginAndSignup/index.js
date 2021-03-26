@@ -1,20 +1,40 @@
-import React, { useState } from 'react';
-import Form from './Form';
-import './index.css';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
+import Login from './Login';
+import Signup from './Signup';
+// import './index.css';
 
 const LoginAndSignup = () => {
-  const [isRegistered, setIsRegistered] = useState(false);
+  const [formType, setFormType] = useState('login');
+  const [user, setUser] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  useLayoutEffect(() => {
+    if (!localStorage.getItem('formType')) {
+      localStorage.setItem('formType', formType);
+    } else {
+      const val = localStorage.getItem('formType');
+      setFormType(val);
+    }
+  }, [formType]);
   const handleToggle = (e) => {
-    e.preventDefault();
-    setIsRegistered(!isRegistered);
+    console.log(e);
+    const valFormType = formType === 'login' ? 'signUp' : 'login';
+    localStorage.setItem('formType', valFormType);
+    setFormType(valFormType);
   };
   return (
-    <>
-      <Form isRegistered={isRegistered} />
+    <div>
+      <h1>{formType.toUpperCase()}</h1>
+      {formType === 'login' && <Login user={user} setUser={setUser} />}
+      {formType === 'signUp' && <Signup user={user} setUser={setUser} />}
       <button onClick={handleToggle} className="toggle">
-        {isRegistered === true ? 'New User ?' : 'Already Registered?  '}
+        {formType === 'login' ? 'New User ?' : 'Already Registered?  '}
       </button>
-    </>
+    </div>
   );
 };
 

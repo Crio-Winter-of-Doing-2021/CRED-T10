@@ -1,13 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 
-const Form = ({ isRegistered }) => {
-  const [user, setUser] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+const Signup = ({ user, setUser }) => {
+  const isRegistered = false;
   const onChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
     if (e.target.name === 'confirmPassword') {
@@ -106,4 +100,4 @@ const Form = ({ isRegistered }) => {
   );
 };
 
-export default Form;
+export default Signup;
