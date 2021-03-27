@@ -2,6 +2,7 @@ import { Fragment, useContext } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import AuthState from './context/auth/AuthState';
+import CardState from './context/card/CardState';
 
 import Home from './components/pages/Home';
 import About from './components/pages/About';
@@ -21,21 +22,24 @@ import './App.css';
 function App() {
   return (
     <AuthState>
-      <Router>
-        <Fragment>
-          <Navbar />
-          <div className="container">
-            <Switch>
-              <PrivateRoute exact path="/" component={Home} />
-              <Route exact path="/about" component={About} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/register" component={Signup} />
-              <Route component={NotFound} />
-            </Switch>
-          </div>
-          {/* <Footer /> */}
-        </Fragment>
-      </Router>
+      <CardState>
+        <Router>
+          <Fragment>
+            <Navbar />
+            {/* add the classname container in div */}
+            <div className="container-obj">
+              <Switch>
+                <PrivateRoute exact path="/" component={Home} />
+                <Route exact path="/about" component={About} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/register" component={Signup} />
+                <Route component={NotFound} />
+              </Switch>
+            </div>
+            {/* <Footer /> */}
+          </Fragment>
+        </Router>
+      </CardState>
     </AuthState>
   );
 }

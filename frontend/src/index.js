@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+const arr = ['#93a1a1', '#073642', '#586e75', '#002b36'];
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <div>
+      <App />
+    </div>
+    {/* <Footer /> */}
   </React.StrictMode>,
   document.getElementById('root')
 );

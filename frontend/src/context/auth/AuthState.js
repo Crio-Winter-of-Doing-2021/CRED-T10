@@ -26,6 +26,7 @@ const AuthState = (props) => {
     user: null,
     loading: true,
     errors: null,
+    userLoading: true,
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -127,6 +128,7 @@ const AuthState = (props) => {
         user: state.user,
         loading: state.loading,
         errors: state.errors,
+        userLoading: state.userLoading,
         loadUser,
         register,
         login,

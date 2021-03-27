@@ -74,14 +74,32 @@ const Login = (props) => {
           required
         />
       </>
-      <>
-        <button type="submit" className="formOptions">
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <button
+          type="submit"
+          className="formOptions"
+          style={{
+            margin: '5px',
+            borderRadius: '5px',
+            width: '75px',
+            backgroundColor: '#f4f4f4',
+          }}
+        >
           Submit
         </button>
-        <button type="reset" className="formOptions">
+        <button
+          type="reset"
+          className="formOptions"
+          style={{
+            margin: '5px',
+            borderRadius: '5px',
+            width: '75px',
+            backgroundColor: '#f4f4f4',
+          }}
+        >
           Reset
         </button>
-      </>
+      </div>
     </form>
   );
 };

@@ -17,6 +17,7 @@ export default (state, action) => {
         isAuthenticated: true,
         loading: false,
         user: action.payload,
+        userLoading: false,
       };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
@@ -39,6 +40,7 @@ export default (state, action) => {
         token: null,
         user: null,
         loading: false,
+        userLoading: true,
       };
     case CLEAR_ERRORS:
       return {

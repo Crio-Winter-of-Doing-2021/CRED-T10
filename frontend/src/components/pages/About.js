@@ -1,6 +1,11 @@
-import React from 'react';
-
+import { useContext, useLayoutEffect } from 'react';
+import AuthContext from '../../context/auth/authContext';
 const About = () => {
+  const authContext = useContext(AuthContext);
+  useLayoutEffect(() => {
+    authContext.loadUser();
+    // eslint-disable-next-line
+  }, []);
   return (
     <div>
       <h1>About this App</h1>

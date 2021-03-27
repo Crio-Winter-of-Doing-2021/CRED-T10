@@ -1,3 +1,6 @@
+// height: 165.873px;
+// width: 240 px;
+
 import React from 'react';
 import styled from 'styled-components';
 import Cards from 'react-credit-cards';
@@ -7,17 +10,17 @@ const Container = styled.div`
     margin: 0 auto;
     -webkit-perspective: 1000px;
     perspective: 1000px;
-    width: 290px;
+    width: 240px;
   }
   .rccs__card {
-    height: 182.873px;
+    height: 165.873px;
     margin: 0 auto;
     position: relative;
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
     -webkit-transition: all 0.4s linear;
     transition: all 0.4s linear;
-    width: 290px;
+    width: 240 px;
   }
   .rccs__card--front,
   .rccs__card--back {

@@ -410,6 +410,35 @@ table th {
   border-radius: 5px;
 }
 
+/* sideButtons */
+.sideButtons,
+.light-text-color {
+  color: #f4f4f4;
+}
+
+.sideButtons:hover {
+  opacity: 50%;
+}
+.dark-text-color {
+  color: #282c35;
+}
+
+@media (min-width: 1000px) {
+  .container-obj {
+    margin-left: 300px;
+    margin-right: 300px;
+    overflow: hidden;
+    padding: 0 2rem;
+  }
+}
+@media only screen and (min-width: 700px) and (max-width: 1000px) {
+  .container-obj {
+    margin-left: 75px;
+    margin-right: 75px;
+    overflow: hidden;
+    padding: 0 2rem;
+  }
+}
 /* Mobile Styles */
 @media (max-width: 700px) {
   .hide-sm {

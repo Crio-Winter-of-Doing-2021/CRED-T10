@@ -1,18 +1,43 @@
-import React from 'react';
-import Card from '../card/Card';
+import React, { Fragment, useContext, useEffect, useLayoutEffect } from 'react';
+
+import CardContext from '../../context/card/cardContext';
+import AuthContext from '../../context/auth/authContext';
+
+import CardListItem from './CardListItem';
 
 const ViewCards = () => {
+  const cardContext = useContext(CardContext);
+  const { getAllCards, cardList, loading } = cardContext;
+  useEffect(() => {
+    getAllCards();
+  }, []);
   const values = {};
+  if (cardList !== null && cardList.length === 0 && !loading) {
+    return (
+      <Fragment>
+        {/* <div>View Cards</div> */}
+        <h3 style={{ textAlign: 'center', color: '#f4f4f4' }}>
+          Please add a Card!
+        </h3>
+      </Fragment>
+    );
+  }
+  /* #93a1a1*/
   return (
-    <div>
-      <div>You will view cards here</div>
-      <Card
-        number={values.number || '434'}
-        name={values.name || 'Prateek Divyanshu'}
-        expiry={values.expiry || '02/25'}
-        cvc={values.cvc || '000'}
-        focused={true}
-      />
+    <div style={{ backgroundColor: ' #282C35' }}>
+      <div>
+        {' '}
+        <h2 className="light-text-color"> View Cards</h2>
+      </div>
+      <div>
+        {cardList !== null && !loading ? (
+          <Fragment>
+            {cardList.map((card, index) => {
+              return <CardListItem key={index} card={card} />;
+            })}
+          </Fragment>
+        ) : null}
+      </div>
     </div>
   );
 };
