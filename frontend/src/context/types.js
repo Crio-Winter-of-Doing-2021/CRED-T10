@@ -26,6 +26,10 @@ export const PAY_AMOUNT = 'PAY_AMOUNT';
 export const CONFIRM_PAYMENT = 'CONFIRM_PAYMENT';
 export const CLEAR_PAYMENT_STATE = 'CLEAR_PAYMENT_STATE';
 
+// statement context
+export const GET_TRANSACTIONS = 'GET_TRANSACTIONS';
+export const SET_TRANSACTIONS = 'SET_TRANSACTIONS';
+
 // alerts
 export const SET_ALERT = 'SET_ALERT';
 export const REMOVE_ALERT = 'REMOVE_ALERT';

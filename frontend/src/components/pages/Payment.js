@@ -25,24 +25,18 @@ const Payment = (props) => {
       // Here in the below if we check if the user is a valid user, check state of the location, and verify if user is accessing his own card or not.
       // Since payment route is of high security therefore we don't allow user to access the same payment portal through any other tab (if the user tries to we redirect him to his dashboard)
       //@Still-to-solve: What if user opens two payment portals: (i think at one time user should be only allowed to open 1 payment route)
+      // here we check if someone has just copy pasted the link and tried to access
       if (
-        !authContext.user ||
-        !location.state ||
-        authContext.user.creditCards.length < location.state[1] + 1
+        authContext.user.creditCards.includes(cardId) === false ||
+        !location.state
       ) {
-        console.log('Invalid user');
+        // as the current user does not have access to this particular cardId we send the user back to Home
+        console.log('user cannot access');
         props.history.push('/');
       } else {
-        // here we check if someone has just copy pasted the link and tried to access
-        if (authContext.user.creditCards[location.state[1]] !== cardId) {
-          // as the current user does not have access to this particular cardId we send the user back to Home
-          console.log('user cannot access');
-          props.history.push('/');
-        } else {
-          console.log('RIGHT NOW', location.state[0][4]);
-          paymentContext.getMaxPayment(Math.abs(location.state[0][4]));
-          console.log('RIGHT NOW', location.state[0]);
-        }
+        console.log('RIGHT NOW', location.state[0][4]);
+        paymentContext.getMaxPayment(Math.abs(location.state[0][4]));
+        console.log('RIGHT NOW', location.state[0]);
       }
     }
   }, [authContext.loading, props.history]);
@@ -137,7 +131,7 @@ const Payment = (props) => {
               name="amountToPay"
               style={{ height: '30px', borderRadius: '5px' }}
               min={1}
-              max={Math.abs(location.state[0][4])}
+              max={Math.abs(paymentContext.maxPaymentAllowed)}
               value={amount}
               onChange={handleAmountChange}
             />
