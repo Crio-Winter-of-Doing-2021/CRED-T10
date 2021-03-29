@@ -1,12 +1,24 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 import Card from '../card/Card';
 import CardSmall from '../card/CardSmall';
 
-const CardItemContainer = ({ card }) => {
-  useLayoutEffect(() => {}, [window.innerWidth]);
-  const [inputCalendar, setShowInputCalendar] = useState(false);
+import AuthContext from '../../context/auth/authContext';
 
+const CardItemContainer = (props) => {
+  const { card, cardPosition } = props;
+  const [paymentButton, setPaymentButton] = useState('disabled');
+  const [inputCalendar, setShowInputCalendar] = useState(false);
+  const authContext = useContext(AuthContext);
+  const { creditCards } = authContext.user;
+  useLayoutEffect(() => {}, [window.innerWidth]);
+
+  // useEffect(() => {
+  //   if (paymentButton === 'active') {
+  //     props.history.push('/payment/id');
+  //   }
+  // }, [paymentButton, props.history]);
   const colorArr = [];
   const values = {};
   const arr = ['#93a1a1', '#073642', '#586e75', '#002b36'];
@@ -35,6 +47,11 @@ const CardItemContainer = ({ card }) => {
     console.log(months[val.split(' ')[1]] + val.split(' ')[3]);
     console.log('Submit');
   };
+
+  const handleRouteToPayment = (e) => {
+    setPaymentButton('active');
+  };
+
   /* #00b383 #93a1a1*/
   return (
     <div
@@ -107,18 +124,26 @@ const CardItemContainer = ({ card }) => {
           </button>
         </div>
         <div style={{ margin: '2px' }}>
-          <button
-            style={{
-              height: '40px',
-              width: '100px',
-              borderRadius: '8px',
-              backgroundColor: '#0B2859',
-              color: '#f4f4f4',
+          <Link
+            to={{
+              pathname: `/payment/${creditCards[cardPosition]}`,
+              state: [card, cardPosition],
             }}
-            disabled={card[4] >= 0}
           >
-            Pay {'  '}Bill
-          </button>
+            <button
+              style={{
+                height: '40px',
+                width: '100px',
+                borderRadius: '8px',
+                backgroundColor: '#0B2859',
+                color: '#f4f4f4',
+              }}
+              disabled={card[4] >= 0}
+              onClick={handleRouteToPayment}
+            >
+              Pay {'  '}Bill
+            </button>
+          </Link>
         </div>
       </div>
       {inputCalendar ? (

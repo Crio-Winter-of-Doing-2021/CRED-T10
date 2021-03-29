@@ -20,6 +20,12 @@ export const CARD_ERROR = 'CARD_ERROR'; // error for any card
 // export const FILTER_CARDS = 'FILTER_CARDS';
 // export const CLEAR_FILTER = 'CLEAR_FILTER';
 
+// payment
+export const GET_TOTAL_PAYMENT_DUE = 'GET_TOTAL_PAYMENT_DUE';
+export const PAY_AMOUNT = 'PAY_AMOUNT';
+export const CONFIRM_PAYMENT = 'CONFIRM_PAYMENT';
+export const CLEAR_PAYMENT_STATE = 'CLEAR_PAYMENT_STATE';
+
 // alerts
 export const SET_ALERT = 'SET_ALERT';
 export const REMOVE_ALERT = 'REMOVE_ALERT';

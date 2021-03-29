@@ -33,7 +33,9 @@ const ViewCards = () => {
         {cardList !== null && !loading ? (
           <Fragment>
             {cardList.map((card, index) => {
-              return <CardListItem key={index} card={card} />;
+              return (
+                <CardListItem key={index} card={card} cardPosition={index} />
+              );
             })}
           </Fragment>
         ) : null}

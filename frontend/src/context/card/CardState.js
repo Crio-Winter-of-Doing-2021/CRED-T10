@@ -66,8 +66,13 @@ const CardState = (props) => {
     }
   };
   // set current card for viewing (it's details)
-  const setCurrentCard = () => {
+  const setCurrentCard = (card) => {
+    console.log(card);
     console.log('Set Current Card');
+    dispatch({
+      type: SET_CURRENT,
+      payload: card,
+    });
   };
   // remove current card from viewing (it's details)
   const removeCurrentCard = () => {

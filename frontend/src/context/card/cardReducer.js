@@ -34,7 +34,7 @@ export default (state, action) => {
     case SET_CURRENT:
       return {
         ...state,
-        card: action.payload.data,
+        card: action.payload,
         loading: false,
       };
     case CLEAR_CURRENT:

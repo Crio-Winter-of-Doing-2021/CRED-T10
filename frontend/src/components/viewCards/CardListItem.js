@@ -1,8 +1,11 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import CardItemContainer from './CardItemContainer';
 
-const CardListItem = ({ card }) => {
+import CardContext from '../../context/card/cardContext';
+
+const CardListItem = ({ card, cardPosition }) => {
   const [dropDown, setDropDown] = useState(false);
+  const cardContext = useContext(CardContext);
   const {
     name,
     account_number,
@@ -19,6 +22,14 @@ const CardListItem = ({ card }) => {
   ];
   const handleDropDown = (e) => {
     console.log('dropdown');
+    console.log(
+      e.target.parentElement.parentElement.parentElement.parentElement.children
+    );
+    if (dropDown === false) {
+      cardContext.setCurrentCard(card);
+    } else {
+      cardContext.setCurrentCard(null);
+    }
     setDropDown(!dropDown);
   };
   // 888888
@@ -67,7 +78,10 @@ const CardListItem = ({ card }) => {
             padding: '2px',
           }}
         >
-          {expiry_month.toString().length()===1?'0'+expiry_month.toString():expiry_month}/{expiry_year}
+          {expiry_month.toString().length === 1
+            ? '0' + expiry_month.toString()
+            : expiry_month}
+          /{expiry_year}
         </div>
         <div
           style={{
@@ -88,7 +102,9 @@ const CardListItem = ({ card }) => {
         </div>
       </div>
       <div style={{ margin: '10px', padding: '5px', color: '#f2f2f2' }}>
-        {dropDown ? <CardItemContainer card={cardInfo} /> : null}
+        {dropDown ? (
+          <CardItemContainer card={cardInfo} cardPosition={cardPosition} />
+        ) : null}
       </div>
     </Fragment>
   );
