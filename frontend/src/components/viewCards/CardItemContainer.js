@@ -49,7 +49,13 @@ const CardItemContainer = ({ card }) => {
         <Card
           number={card[1]}
           name={card[0]}
-          expiry={card[2] + card[3]}
+          expiry={
+            (card[2].toString().length === 1
+              ? '0' + card[2].toString()
+              : card[2].toString()) +
+            '' +
+            card[3].toString()
+          }
           cvc={'000'}
           focused={'number'}
         />

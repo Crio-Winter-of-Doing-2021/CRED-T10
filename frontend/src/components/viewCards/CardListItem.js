@@ -67,7 +67,7 @@ const CardListItem = ({ card }) => {
             padding: '2px',
           }}
         >
-          {expiry_month}/{expiry_year}
+          {expiry_month.toString().length()===1?'0'+expiry_month.toString():expiry_month}/{expiry_year}
         </div>
         <div
           style={{
