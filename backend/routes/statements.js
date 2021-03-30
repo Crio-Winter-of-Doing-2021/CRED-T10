@@ -126,9 +126,9 @@ router.post('/:year/:month', async (req, res) => {
   let totalTransactionAmount = 0;
   transactions.forEach(function (curTransaction) {
     if (curTransaction.transaction_type === 'debit') {
-      totalTransactionAmount -= curTransaction.amount;
-    } else if (curTransaction.transaction_type === 'credit') {
       totalTransactionAmount += curTransaction.amount;
+    } else if (curTransaction.transaction_type === 'credit') {
+      totalTransactionAmount -= curTransaction.amount;
     }
   });
 
