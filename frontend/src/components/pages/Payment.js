@@ -49,7 +49,10 @@ const Payment = (props) => {
       console.log(counter, 'counter');
     }
   }, [isBillPaid]);
-
+  // clearing out the payment state after component dismount
+  useEffect(() => {
+    return () => paymentContext.clearPayments();
+  }, []);
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
     console.log('Paid');

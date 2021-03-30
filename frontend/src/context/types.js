@@ -29,6 +29,7 @@ export const CLEAR_PAYMENT_STATE = 'CLEAR_PAYMENT_STATE';
 // statement context
 export const GET_TRANSACTIONS = 'GET_TRANSACTIONS';
 export const SET_TRANSACTIONS = 'SET_TRANSACTIONS';
+export const CLEAR_TRANSACTIONS = 'CLEAR_TRANSACTIONS';
 
 // alerts
 export const SET_ALERT = 'SET_ALERT';

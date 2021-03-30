@@ -7,9 +7,10 @@ import CardListItem from './CardListItem';
 
 const ViewCards = () => {
   const cardContext = useContext(CardContext);
-  const { getAllCards, cardList, loading } = cardContext;
+  const { getAllCards, cardList, loading, removeAllCards } = cardContext;
   useEffect(() => {
     getAllCards();
+    return () => removeAllCards();
   }, []);
   const values = {};
   if (cardList !== null && cardList.length === 0 && !loading) {

@@ -42,6 +42,9 @@ const CardState = (props) => {
   };
   // remove all cards of user
   const removeAllCards = () => {
+    dispatch({
+      type: CLEAR_CARDS,
+    });
     console.log('Remove all cards');
   };
   // add card

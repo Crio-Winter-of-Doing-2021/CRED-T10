@@ -26,10 +26,11 @@ export default (state, action) => {
     case CLEAR_CARDS:
       return {
         ...state,
-        loading: false,
-        cardsLoading: true,
-        cardList: [],
+        cardList: null,
         card: null,
+        cardsLoading: true,
+        errors: null,
+        loading: true,
       };
     case SET_CURRENT:
       return {

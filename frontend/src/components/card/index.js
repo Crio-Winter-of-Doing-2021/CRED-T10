@@ -58,6 +58,7 @@ const CreditCard = ({ handleAddCard }) => {
                   pattern="[\d| ]{16,22}"
                   placeholder="Card Number"
                   format={formatCreditCardNumber}
+                  required
                 />
               </div>
               <div>
@@ -66,6 +67,7 @@ const CreditCard = ({ handleAddCard }) => {
                   component="input"
                   type="text"
                   placeholder="Name"
+                  required
                 />
               </div>
               <div>
@@ -76,6 +78,7 @@ const CreditCard = ({ handleAddCard }) => {
                   pattern="\d\d/\d\d"
                   placeholder="Valid Thru"
                   format={formatExpirationDate}
+                  required
                 />
                 <Field
                   name="cvc"
@@ -84,6 +87,7 @@ const CreditCard = ({ handleAddCard }) => {
                   pattern="\d{3,4}"
                   placeholder="CVC"
                   format={formatCVC}
+                  required
                 />
               </div>
               <div className="buttons">
