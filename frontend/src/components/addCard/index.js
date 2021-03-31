@@ -3,12 +3,15 @@ import React, { useEffect, useLayoutEffect, useState, useContext } from 'react';
 import CreditCard from '../card/index';
 
 import CardContext from '../../context/card/cardContext';
+import AlertContext from '../../context/alert/alertContext';
 
 const AddCard = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [showAddCard, setShowAddCard] = useState(false);
   const cardContext = useContext(CardContext);
-  const { addCard } = cardContext;
+  const alertContext = useContext(AlertContext);
+  const { addCard, errors, clearCardErrors } = cardContext;
+  const { setAlert } = alertContext;
 
   // useLayoutEffect(() => {}, [window.innerWidth > 700]);
   const closeInfo = () => {
@@ -21,7 +24,11 @@ const AddCard = () => {
     if (showInfo) {
       closeInfo();
     }
-  }, [showInfo]);
+    if (errors) {
+      setAlert(errors, 'danger');
+      clearCardErrors();
+    }
+  }, [errors, showInfo]);
   const onAddButtonToggle = () => {
     setShowAddCard(!showAddCard);
   };

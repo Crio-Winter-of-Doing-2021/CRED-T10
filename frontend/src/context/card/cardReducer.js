@@ -49,7 +49,7 @@ export default (state, action) => {
         ...state,
         cards: null,
         card: null,
-        errors: ['error'],
+        errors: action.payload,
       };
     case CLEAR_ERRORS:
       return {

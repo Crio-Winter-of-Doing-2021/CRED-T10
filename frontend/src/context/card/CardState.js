@@ -64,8 +64,11 @@ const CardState = (props) => {
       console.log(res.data);
       getAllCards();
     } catch (err) {
-      console.log(err);
-      dispatch({ type: CARD_ERROR });
+      console.log(err.response.data.msg.message);
+      dispatch({
+        type: CARD_ERROR,
+        payload: err.response.data.msg.message,
+      });
     }
   };
   // set current card for viewing (it's details)
@@ -84,6 +87,9 @@ const CardState = (props) => {
   // clear card errors
   const clearCardErrors = () => {
     console.log('Clear Card Errors if any');
+    dispatch({
+      type: CLEAR_ERRORS,
+    });
   };
 
   return (

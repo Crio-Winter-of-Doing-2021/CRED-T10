@@ -90,7 +90,7 @@ const CardItemContainer = (props) => {
         />
       )}
       <div style={{ paddingTop: '5px', textAlign: 'center', color: '#f4f4f4' }}>
-        Balance: {card[4]}
+        Outstanding Amount: {card[4]}
       </div>
       <div
         style={{
@@ -142,7 +142,7 @@ const CardItemContainer = (props) => {
                 backgroundColor: '#0B2859',
                 color: '#f4f4f4',
               }}
-              disabled={card[4] >= 0}
+              disabled={card[4] <= 0}
               // onClick={handleRouteToPayment}
             >
               Pay {'  '}Bill

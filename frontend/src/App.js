@@ -22,6 +22,7 @@ import PublicRoute from './components/routing/PublicRoute';
 import './App.css';
 import Payment from './components/pages/Payment';
 import Statement from './components/statement';
+import AlertState from './context/alert/AlertState';
 
 function App() {
   return (
@@ -29,27 +30,32 @@ function App() {
       <CardState>
         <PaymentState>
           <StatementState>
-            <Router>
-              <Fragment>
-                <Navbar />
-                {/* add the classname container in div */}
-                <div className="container-obj">
-                  <Switch>
-                    <PrivateRoute exact path="/" component={Home} />
-                    <PrivateRoute path="/payment/:cardId" component={Payment} />
-                    <PrivateRoute
-                      path="/statement/:cardId/:year/:month"
-                      component={Statement}
-                    />
-                    <Route exact path="/about" component={About} />
-                    <Route exact path="/login" component={Login} />
-                    <Route exact path="/register" component={Signup} />
-                    <Route component={NotFound} />
-                  </Switch>
-                </div>
-                {/* <Footer /> */}
-              </Fragment>
-            </Router>
+            <AlertState>
+              <Router>
+                <Fragment>
+                  <Navbar />
+                  {/* add the classname container in div */}
+                  <div className="container-obj">
+                    <Switch>
+                      <PrivateRoute exact path="/" component={Home} />
+                      <PrivateRoute
+                        path="/payment/:cardId"
+                        component={Payment}
+                      />
+                      <PrivateRoute
+                        path="/statement/:cardId/:year/:month"
+                        component={Statement}
+                      />
+                      <Route exact path="/about" component={About} />
+                      <Route exact path="/login" component={Login} />
+                      <Route exact path="/register" component={Signup} />
+                      <Route component={NotFound} />
+                    </Switch>
+                  </div>
+                  {/* <Footer /> */}
+                </Fragment>
+              </Router>
+            </AlertState>
           </StatementState>
         </PaymentState>
       </CardState>

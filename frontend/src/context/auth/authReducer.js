@@ -36,7 +36,7 @@ export default (state, action) => {
       return {
         ...state,
         isAuthenticated: null,
-        errors: action.payload,
+        error: action.payload,
         token: null,
         user: null,
         loading: false,

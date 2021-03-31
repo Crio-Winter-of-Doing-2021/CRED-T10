@@ -25,7 +25,7 @@ const AuthState = (props) => {
     isAuthenticated: false,
     user: null,
     loading: true,
-    errors: null,
+    error: null,
     userLoading: true,
   };
 
@@ -73,7 +73,11 @@ const AuthState = (props) => {
       console.log('REGISTRATION DONE', userData);
       console.log('register');
     } catch (err) {
-      console.log('Server error');
+      dispatch({
+        type: REGISTER_FAIL,
+        payload: err.response.data.msg,
+      });
+      console.log('ERROR in Registration');
     }
   };
 
@@ -100,10 +104,20 @@ const AuthState = (props) => {
       loadUser();
     } catch (err) {
       console.log('ERROR');
-      dispatch({
-        type: LOGIN_FAIL,
-        payload: err.response.data.msg,
-      });
+      console.log(err.response);
+      if (err.response.status === 422) {
+        console.log('HERE in 422');
+        dispatch({
+          type: LOGIN_FAIL,
+          payload: err.response.data.errors[0].msg,
+        });
+      } else {
+        console.log(err.response.data.msg);
+        dispatch({
+          type: LOGIN_FAIL,
+          payload: err.response.data.msg,
+        });
+      }
     }
   };
   // logout user
@@ -127,7 +141,7 @@ const AuthState = (props) => {
         isAuthenticated: state.isAuthenticated,
         user: state.user,
         loading: state.loading,
-        errors: state.errors,
+        error: state.error,
         userLoading: state.userLoading,
         loadUser,
         register,

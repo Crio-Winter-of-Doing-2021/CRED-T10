@@ -1,6 +1,7 @@
 import { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import ViewCards from '../viewCards/index';
 import AddCard from '../addCard/index';
+import Alerts from '../layout/Alerts';
 import AuthContext from '../../context/auth/authContext';
 import CardContext from '../../context/card/cardContext';
 import Greet from '../extras/Greet';
@@ -22,6 +23,7 @@ const Home = () => {
 
   return (
     <div style={{ padding: '10px' }}>
+      <Alerts />
       {!userLoading
         ? showHello && (
             <div style={{ textAlign: 'center' }}>

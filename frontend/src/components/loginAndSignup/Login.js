@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 
 import AuthContext from '../../context/auth/authContext';
-import { LOGOUT } from '../../context/types';
+import AlertContext from '../../context/alert/alertContext';
+import Alerts from '../layout/Alerts';
 
 const Login = (props) => {
   const authContext = useContext(AuthContext);
-
+  const alertContext = useContext(AlertContext);
   const { login, error, clearErrors, isAuthenticated, logout } = authContext;
-
+  const { setAlert } = alertContext;
   useEffect(() => {
     let mounted = true;
 
@@ -17,10 +18,10 @@ const Login = (props) => {
       logout();
     }
 
-    // if (error === 'Invalid Credentials') {
-    //   //setAlert(error, 'danger');
-    //   clearErrors();
-    // }
+    if (error) {
+      setAlert(error, 'danger');
+      clearErrors();
+    }
     return () => (mounted = false);
     // eslint-disable-next-line
   }, [error, isAuthenticated, props.history]);
@@ -49,58 +50,61 @@ const Login = (props) => {
     console.log(err.target.name);
   };
   return (
-    <form
-      className="form"
-      onSubmit={handleSubmit}
-      onInvalidCapture={handleInvalidCapture}
-    >
-      <>
-        <input
-          type="email"
-          name="email"
-          value={user.email}
-          placeholder="Email"
-          onChange={onChange}
-          required
-          maxLength={35}
-        />
-        <input
-          type="password"
-          name="password"
-          value={user.password}
-          placeholder="Password"
-          onChange={onChange}
-          maxLength={20}
-          required
-        />
-      </>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <button
-          type="submit"
-          className="formOptions"
-          style={{
-            margin: '5px',
-            borderRadius: '5px',
-            width: '75px',
-            backgroundColor: '#f4f4f4',
-          }}
-        >
-          Submit
-        </button>
-        <button
-          type="reset"
-          className="formOptions"
-          style={{
-            margin: '5px',
-            borderRadius: '5px',
-            width: '75px',
-            backgroundColor: '#f4f4f4',
-          }}
-        >
-          Reset
-        </button>
-      </div>
-    </form>
+    <>
+      <form
+        className="form"
+        onSubmit={handleSubmit}
+        onInvalidCapture={handleInvalidCapture}
+      >
+        <>
+          {!error && <Alerts />}
+          <input
+            type="email"
+            name="email"
+            value={user.email}
+            placeholder="Email"
+            onChange={onChange}
+            required
+            maxLength={35}
+          />
+          <input
+            type="password"
+            name="password"
+            value={user.password}
+            placeholder="Password"
+            onChange={onChange}
+            maxLength={20}
+            required
+          />
+        </>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <button
+            type="submit"
+            className="formOptions"
+            style={{
+              margin: '5px',
+              borderRadius: '5px',
+              width: '75px',
+              backgroundColor: '#f4f4f4',
+            }}
+          >
+            Submit
+          </button>
+          <button
+            type="reset"
+            className="formOptions"
+            style={{
+              margin: '5px',
+              borderRadius: '5px',
+              width: '75px',
+              backgroundColor: '#f4f4f4',
+            }}
+          >
+            Reset
+          </button>
+        </div>
+      </form>
+    </>
   );
 };
 
