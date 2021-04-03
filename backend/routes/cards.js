@@ -12,6 +12,8 @@ const auth = require('../middleware/auth'); // for authentication
 const Card = require('../models/cardSchema');
 // Users Collection
 const User = require('../models/Users');
+// Smart Statement collection
+const SmartStatement = require('../models/smartStatement');
 
 // router for /api/cards
 router
@@ -111,6 +113,20 @@ router.post('/', auth, async (req, res) => {
       //console.log(user);
       user.creditCards.push(card_id);
       await User.updateOne({ _id: req.user.id }, user);
+
+      // Save card in SmartStatement for later use
+      const smartStatement = new SmartStatement({
+        creditCardId: card_id,
+        creditCardNumber: Number(cardNumber)
+      });
+
+      smartStatement.save((err, savedSmartStatement) => {
+        if(!err) {
+          console.log('Smart Statement saved successfully with id: ' + savedSmartStatement._id);
+        } else {
+          console.log(err);
+        }
+      });
 
       res.status(200).json({ id: card_id, msg: 'Card saved successfully' });
     } else {
