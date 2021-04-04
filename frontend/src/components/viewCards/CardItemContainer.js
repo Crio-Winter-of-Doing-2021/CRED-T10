@@ -60,10 +60,10 @@ const CardItemContainer = (props) => {
   return (
     <div
       style={{
-        backgroundColor: '#002b36',
+        backgroundColor: '#1f1f1f',
         paddingTop: '10px',
         paddingBottom: '10px',
-        boxShadow: '3px 3px #1f5361',
+        boxShadow: '3px 3px #888888',
       }}
     >
       {window.innerWidth > 700 ? (
@@ -90,7 +90,11 @@ const CardItemContainer = (props) => {
         />
       )}
       <div style={{ paddingTop: '5px', textAlign: 'center', color: '#f4f4f4' }}>
-        Outstanding Amount: {card[4]}
+        <span>Outstanding Amount:</span>{' '}
+        <span style={{ color: '#ffae42' }}>
+          {' '}
+          ₹<b>{card[4]} </b>
+        </span>
       </div>
       <div
         style={{
@@ -101,17 +105,24 @@ const CardItemContainer = (props) => {
         }}
       >
         <div style={{ margin: '2px' }}>
-          <button
-            style={{
-              height: '40px',
-              width: '100px',
-              borderRadius: '8px',
-              backgroundColor: '#0B2859',
-              color: '#f4f4f4',
+          <Link
+            to={{
+              pathname: `/statement/smartView/${creditCards[cardPosition]}`,
+              state: [card, cardPosition],
             }}
           >
-            Smart View
-          </button>
+            <button
+              style={{
+                height: '40px',
+                width: '100px',
+                borderRadius: '8px',
+                backgroundColor: '#f4f4f4',
+                color: '#1f1f1f',
+              }}
+            >
+              Smart View
+            </button>
+          </Link>
         </div>
         <div style={{ margin: '2px' }}>
           <button
@@ -119,8 +130,8 @@ const CardItemContainer = (props) => {
               height: '40px',
               width: '100px',
               borderRadius: '8px',
-              backgroundColor: '#0B2859',
-              color: '#f4f4f4',
+              backgroundColor: '#f4f4f4',
+              color: '#1f1f1f',
             }}
             onClick={handleStatementClick}
           >
@@ -139,8 +150,8 @@ const CardItemContainer = (props) => {
                 height: '40px',
                 width: '100px',
                 borderRadius: '8px',
-                backgroundColor: '#0B2859',
-                color: '#f4f4f4',
+                backgroundColor: '#f4f4f4',
+                color: '#1f1f1f',
               }}
               disabled={card[4] <= 0}
               // onClick={handleRouteToPayment}
@@ -180,6 +191,8 @@ const CardItemContainer = (props) => {
                     marginLeft: '5px',
                     width: '50px',
                     borderRadius: '5px',
+                    backgroundColor: '#f4f4f4',
+                    color: '#1f1f1f',
                   }}
                   disabled={
                     monthAndYear.value >

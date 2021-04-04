@@ -39,11 +39,11 @@ const TransactionList = ({ locationState }) => {
   }, [loading]);
 
   return (
-    <>
+    <div>
       {loading === true ? (
         <div>Loading....</div>
       ) : (
-        <div>
+        <div style={{ padding: '10px 5px' }}>
           {statementContext.transactions.length > 0 &&
             statementContext.transactions.map((transaction, index) => {
               // setSumTotalForMonth(
@@ -58,14 +58,36 @@ const TransactionList = ({ locationState }) => {
                   key={index}
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: '0.25fr 1fr 1fr 1fr 1fr',
+                    gridTemplateColumns: '0.2fr 1fr 1fr 0.5fr 0.5fr',
+                    backgroundColor: '#1f1f1f',
+                    color: '#f2f2f2',
+                    margin: '5px',
+                    padding: '5px 0px 5px 5px',
                   }}
                 >
                   <div>{index + 1}</div>
-                  <div>{transaction.category}</div>
-                  <div>{transaction.vendor}</div>
-                  <div>{transaction.transaction_type}</div>
-                  <div>{transaction.amount}</div>
+                  <div>{capitalizeFirstLetter(transaction.category)}</div>
+                  <div>{capitalizeFirstLetter(transaction.vendor)}</div>
+                  <div>
+                    {capitalizeFirstLetter(transaction.transaction_type)}
+                  </div>
+                  {transaction.transaction_type === 'debit' ? (
+                    <div
+                      style={{
+                        color: '#dc3545',
+                      }}
+                    >
+                      {'-  '}₹{transaction.amount}
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        color: '#28a745',
+                      }}
+                    >
+                      {'+'}₹{transaction.amount}
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -75,37 +97,76 @@ const TransactionList = ({ locationState }) => {
             ) : null}
           </div>
           {sumForMonth === 0 ? (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                backgroundColor: '#1f1f1f',
+                color: '#f2f2f2',
+                margin: '5px',
+                padding: '5px 0px 5px 5px',
+              }}
+            >
               <div>Total: </div> <div>{sumForMonth}</div>{' '}
             </div>
           ) : (
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
+                gridTemplateColumns: '1fr',
+
+                backgroundColor: '#1f1f1f',
+                color: '#f2f2f2',
+                margin: '15px 5px 5px 5px',
+                padding: '5px 0px 5px 5px',
               }}
             >
-              <div>Total: </div>
-              <div>{sumForMonth}</div>{' '}
+              <div style={{ textAlign: 'center' }}>
+                Outstanding Amount for this month:{' '}
+                <span style={{ color: '#ffae42' }}>
+                  {' '}
+                  ₹<b>{sumForMonth}</b>
+                </span>
+              </div>
             </div>
           )}
         </div>
       )}
-      <div style={{ textAlign: 'center', marginTop: '20px' }}>
+      <div
+        style={{
+          textAlign: 'center',
+          // marginTop: '20px',
+          paddingBottom: '10px',
+        }}
+      >
         <Link
           to={{
             pathname: '/',
             state: null,
           }}
         >
-          <button style={{ borderRadius: '8px' }}>
+          <button
+            style={{
+              borderRadius: '8px',
+              width: '90px',
+              height: '35px',
+              backgroundColor: '#333333',
+              color: '#f2f2f2',
+              fontWeight: 'normal',
+              boxShadow: '#888 5px 5px 5px',
+            }}
+          >
             {' '}
-            <b> Go Back!</b>
+            Go Back
           </button>
         </Link>
       </div>
-    </>
+    </div>
   );
+};
+
+const capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
 export default TransactionList;

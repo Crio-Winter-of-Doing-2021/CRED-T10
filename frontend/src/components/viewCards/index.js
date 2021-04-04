@@ -25,10 +25,10 @@ const ViewCards = () => {
   }
   /* #93a1a1*/
   return (
-    <div style={{ backgroundColor: ' #282C35' }}>
+    <div style={{ backgroundColor: ' #e0e0e0' }}>
       <div>
         {' '}
-        <h2 className="light-text-color"> View Cards</h2>
+        <h2> View Cards</h2>
       </div>
       <div>
         {cardList !== null && !loading ? (

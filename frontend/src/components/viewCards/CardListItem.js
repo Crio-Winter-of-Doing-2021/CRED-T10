@@ -38,7 +38,7 @@ const CardListItem = ({ card, cardPosition }) => {
       <div
         style={{
           display: 'grid',
-          backgroundColor: '#4d4d4d',
+          backgroundColor: '#1f1f1f',
           margin: '10px',
           padding: '5px',
           color: '#f2f2f2',

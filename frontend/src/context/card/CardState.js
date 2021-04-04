@@ -64,11 +64,18 @@ const CardState = (props) => {
       console.log(res.data);
       getAllCards();
     } catch (err) {
-      console.log(err.response.data.msg.message);
-      dispatch({
-        type: CARD_ERROR,
-        payload: err.response.data.msg.message,
-      });
+      console.log(err.response);
+      if (err.response.status === 500) {
+        dispatch({
+          type: CARD_ERROR,
+          payload: err.response.data.msg.message,
+        });
+      } else {
+        dispatch({
+          type: CARD_ERROR,
+          payload: err.response.data.msg,
+        });
+      }
     }
   };
   // set current card for viewing (it's details)
@@ -114,3 +121,12 @@ const CardState = (props) => {
 };
 
 export default CardState;
+
+//
+//[hotel,...,x] = categoriesNames
+//[0,1,...,x_count] =categoriesCount
+//[1000,2000...,x_amount] = categoriesAmount
+
+//[amazon,] = vendorsNames
+//[0,1,...] = vendorsCount
+//[100,3000,...] = vendorsAmount

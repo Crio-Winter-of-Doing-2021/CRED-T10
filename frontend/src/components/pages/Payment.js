@@ -74,7 +74,7 @@ const Payment = (props) => {
               <div
                 style={{
                   // display: 'flex',
-                  backgroundColor: '#f2f2f2',
+                  backgroundColor: '#e0e0e0',
                   // width: '325px',
                   // justifyContent: 'center',
                   textAlign: 'center',
@@ -91,25 +91,35 @@ const Payment = (props) => {
               <div
                 style={{
                   display: 'flex',
-                  backgroundColor: 'lightblue',
+                  backgroundColor: '#e0e0e0',
                   justifyContent: 'space-around',
                 }}
               >
-                <p>Go Back To Home!{'  '}</p>
                 <Link
                   to={{
                     pathname: '/',
                     state: null,
                   }}
                 >
-                  <button onClick={paymentContext.clearPayments}>Home!</button>
+                  <button
+                    onClick={paymentContext.clearPayments}
+                    style={{
+                      backgroundColor: '#1f1f1f',
+                      color: '#e0e0e0',
+                      padding: '5px',
+                      marginBottom: '5px',
+                      borderRadius: '8px',
+                    }}
+                  >
+                    Go Back to Home
+                  </button>
                 </Link>
               </div>
             </div>
           ) : (
             <div
               style={{
-                backgroundColor: '#f2f2f2',
+                backgroundColor: '#e0e0e0',
                 textAlign: 'center',
               }}
             >
@@ -123,30 +133,66 @@ const Payment = (props) => {
           )}
         </>
       ) : (
-        <div style={{ color: '#f2f2f2', backgroundColor: 'hotpink' }}>
+        <div
+          style={{
+            color: '#f2f2f2',
+            backgroundColor: '#1f1f1f',
+            textAlign: 'center',
+          }}
+        >
           <div style={{ fontSize: '30px' }}>
-            <b>Pay Amount</b>
+            <h3>Bill Payment</h3>
           </div>
           <form onSubmit={handlePaymentSubmit}>
-            <label htmlFor="amountToPay">Pay: </label>
+            <label
+              htmlFor="amountToPay "
+              style={{
+                marginRight: '10px',
+                fontSize: '20px',
+                paddingTop: '5px',
+              }}
+            >
+              Amount :{' '}
+            </label>{' '}
             <input
               type="number"
               name="amountToPay"
-              style={{ height: '30px', borderRadius: '5px' }}
+              style={{
+                height: '30px',
+                borderRadius: '5px',
+                textAlign: 'center',
+                padding: '5px',
+              }}
               min={1}
               max={Math.abs(paymentContext.maxPaymentAllowed)}
               value={amount}
               onChange={handleAmountChange}
             />
             {'  '}
-            <button
-              type="submit"
-              style={{ borderRadius: '8px', padding: '2px' }}
-            >
-              <b>Pay Now!</b>
-            </button>
+            <div>
+              <button
+                type="submit"
+                style={{ borderRadius: '8px', padding: '2px', width: '60px' }}
+              >
+                <b>Pay</b>
+              </button>
+            </div>
           </form>
           {/* <div>{location}</div> */}
+          <div
+            style={{
+              backgroundColor: '#000',
+              marginTop: '15px',
+              paddingTop: '10px',
+              textAlign: 'left',
+            }}
+          >
+            <span>Outstanding Amount:</span>{' '}
+            <span style={{ color: '#ffae42' }}>
+              {' '}
+              ₹<b>{paymentContext.maxPaymentAllowed} </b>
+            </span>
+          </div>
         </div>
       )}
     </>

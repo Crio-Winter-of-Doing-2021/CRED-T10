@@ -56,6 +56,7 @@ const AddCard = () => {
     addCard(cardObject);
     setTimeout(setShowAddCard(!showAddCard), 1000);
   };
+  // #586e75
   return (
     <div>
       {showAddCard ? (
@@ -63,18 +64,22 @@ const AddCard = () => {
           style={{
             margin: '10px',
             border: '2px solid black',
-            backgroundColor: '#586e75',
-            boxShadow: '3px 3px #888888',
+            backgroundColor: '#e0e0e0',
           }}
         >
-          <div style={{ float: 'right' }} className="sideButtons">
+          <div
+            style={{ float: 'right', padding: '5px 5px 0px 0px' }}
+            className="sideButtons"
+          >
             <a onClick={onAddButtonToggle} href="#">
-              <i className="fas fa-times-circle sideButtons"></i>{' '}
-              <span className="hide-sm sideButtons">Close</span>
+              <i className="fas fa-times-circle " style={{ color: '#333' }}></i>{' '}
+              <span className="hide-sm " style={{ color: '#333' }}>
+                Close
+              </span>
             </a>
           </div>
           <div>
-            <h2 className="light-text-color">Add Credit Card</h2>
+            <h2>Add Credit Card</h2>
             <CreditCard handleAddCard={handleAddCard} />
           </div>
         </div>

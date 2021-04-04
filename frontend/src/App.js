@@ -23,6 +23,7 @@ import './App.css';
 import Payment from './components/pages/Payment';
 import Statement from './components/statement';
 import AlertState from './context/alert/AlertState';
+import SmartStatement from './components/pages/SmartStatement';
 
 function App() {
   return (
@@ -45,6 +46,10 @@ function App() {
                       <PrivateRoute
                         path="/statement/:cardId/:year/:month"
                         component={Statement}
+                      />
+                      <PrivateRoute
+                        path="/statement/smartView/:cardId"
+                        component={SmartStatement}
                       />
                       <Route exact path="/about" component={About} />
                       <Route exact path="/login" component={Login} />

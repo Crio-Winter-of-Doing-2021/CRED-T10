@@ -25,15 +25,15 @@ const Statement = (props) => {
     // console.log(location);
   }, [authContext.loading, props.history]);
   return (
-    <div style={{ color: '#f2f2f2' }}>
+    <div style={{ backgroundColor: '#e0e0e0', color: '#333' }}>
       <div>
         <h2>
-          Statement For:{month}/ {year}
+          Statement For: {month}/{year}
         </h2>
       </div>
       {authContext.loading === false && location.state ? (
         <>
-          <div>{location.state}</div>
+          {/* <div>{location.state}</div> */}
           <TransactionList locationState={location.state} />
         </>
       ) : null}
