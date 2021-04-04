@@ -61,7 +61,7 @@ const Signup = (props) => {
     <>
       {!error && <Alerts />}
       <form
-        className="form"
+        className="form lessWide"
         onSubmit={handleSubmit}
         onInvalidCapture={handleInvalidCapture}
       >

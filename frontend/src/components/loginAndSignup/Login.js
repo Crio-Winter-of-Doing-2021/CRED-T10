@@ -52,7 +52,7 @@ const Login = (props) => {
   return (
     <>
       <form
-        className="form"
+        className="form lessWide"
         onSubmit={handleSubmit}
         onInvalidCapture={handleInvalidCapture}
       >

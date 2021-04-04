@@ -437,6 +437,10 @@ button:disabled {
     overflow: hidden;
     padding: 0 2rem;
   }
+  .lessWide {
+    margin-left: 150px;
+    margin-right: 150px;
+  }
 }
 /* */
 @media only screen and (min-width: 700px) and (max-width: 1000px) {
