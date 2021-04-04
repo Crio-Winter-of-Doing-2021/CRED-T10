@@ -136,27 +136,29 @@ router.post('/:year/:month', async (req, res) => {
     }
   });
 
-
   // Calculate outanding_amount and update its value in cards collection
   const foundCard = await Card.findOne({ account_number: cardNumber });
-  console.log("Amount added/deducted: " + totalTransactionAmount);
+  console.log('Amount added/deducted: ' + totalTransactionAmount);
 
   foundCard.outstanding_amount += totalTransactionAmount;
-  console.log("Updated Outstanding Amount: " + foundCard.outstanding_amount);
+  console.log('Updated Outstanding Amount: ' + foundCard.outstanding_amount);
 
+  await Card.updateOne({ account_number: cardNumber }, foundCard);
   // *********************************************************************
   console.log(foundCard._id);
 
   // Get SmartStatement document for current card
   const id = mongoose.Types.ObjectId(foundCard._id);
-  const foundSmartStatement = await SmartStatement.findOne({ creditCardId: id });
+  const foundSmartStatement = await SmartStatement.findOne({
+    creditCardId: id,
+  });
 
   // Suggestion for async/await for replacement
   // transactions.forEach(async curTransaction => {
   //   const foundSmartStatement = await SmartStatement.findOne({ creditCardId: foundCard._id });
 
   // ************** Update SmartStatements Collection **************
-  transactions.forEach(curTransaction => {
+  transactions.forEach((curTransaction) => {
     // Only works for debit transactions currently as credit transactions require a reward structure
     if (curTransaction.transaction_type === 'debit') {
       let curVendor = curTransaction.vendor;
@@ -165,11 +167,13 @@ router.post('/:year/:month', async (req, res) => {
       // Increase count of category by 1 to the given SmartStatement
       foundSmartStatement.categoriesIndividualCount[curCategory] += 1;
       // Add amount to the given SmartStatement category
-      foundSmartStatement.categoriesIndividualAmount[curCategory] += curTransaction.amount;
+      foundSmartStatement.categoriesIndividualAmount[curCategory] +=
+        curTransaction.amount;
       // Increase count of vendor by 1 to the given SmartStatement
       foundSmartStatement.vendorsIndividualCount[curVendor] += 1;
       // Add amount to the given SmartStatement vendor
-      foundSmartStatement.vendorsIndividualAmount[curVendor] += curTransaction.amount;
+      foundSmartStatement.vendorsIndividualAmount[curVendor] +=
+        curTransaction.amount;
       // Add total count of all categories till now
       foundSmartStatement.categoriesTotalCount += 1;
       // Add total amount of all categories till now
@@ -183,11 +187,16 @@ router.post('/:year/:month', async (req, res) => {
   // *************************************************************************
 
   // ************* Update outstandingAmount in cards Collection ***************
-  await Card.updateOne({ account_number: cardNumber }, foundCard);
-
-  await SmartStatement.updateOne({ creditCardId: foundCard._id }, foundSmartStatement);
-
-  res.status(200).json({ statement, transactions });
+  try {
+    await SmartStatement.updateOne(
+      { creditCardId: foundCard._id },
+      foundSmartStatement
+    );
+  } catch (err) {
+    console.log(err);
+  } finally {
+    res.status(200).json({ statement, transactions });
+  }
 });
 
 // @route     GET api/cards/{cardNumber}/statements/{year}/{month}
