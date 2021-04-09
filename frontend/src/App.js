@@ -24,6 +24,7 @@ import Payment from './components/pages/Payment';
 import Statement from './components/statement';
 import AlertState from './context/alert/AlertState';
 import SmartStatement from './components/pages/SmartStatement';
+import RewardPoints from './components/pages/RewardPoints';
 
 function App() {
   return (
@@ -50,6 +51,10 @@ function App() {
                       <PrivateRoute
                         path="/statement/smartView/:cardId"
                         component={SmartStatement}
+                      />
+                      <PrivateRoute
+                        path="/rewardPoints"
+                        component={RewardPoints}
                       />
                       <Route exact path="/about" component={About} />
                       <Route exact path="/login" component={Login} />

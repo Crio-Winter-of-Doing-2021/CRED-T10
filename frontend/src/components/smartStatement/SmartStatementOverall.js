@@ -21,8 +21,7 @@ const useResizeObserver = (ref) => {
   return dimensions;
 };
 
-function SmartStatementOverall({
-  data,
+const SmartStatementOverall = ({
   categoriesCount,
   vendorsCount,
   categoriesNames,
@@ -31,7 +30,7 @@ function SmartStatementOverall({
   vendorsAmount,
   categoriesAmountPercent,
   vendorsAmountPercent,
-}) {
+}) => {
   const [categoriesData, setCategoriesData] = useState([]);
   const [vendorsData, setVendorsData] = useState([]);
   const svgRef = useRef();
@@ -215,7 +214,6 @@ function SmartStatementOverall({
       .attr('fill', colorScale)
       .attr('height', (value) => dimensions2.height - yScale2(value));
   }, [
-    data,
     dimensions,
     dimensions2,
     vendorsCount,
@@ -295,6 +293,7 @@ function SmartStatementOverall({
         <span>
           {categoriesData.length > 0 ? (
             <PieChart
+              key={1}
               data={categoriesData}
               outerRadius={100}
               innerRadius={20}
@@ -305,6 +304,7 @@ function SmartStatementOverall({
         <span style={{ marginRight: '20px' }}>
           {vendorsData.length > 0 ? (
             <PieChart
+              key={2}
               data={vendorsData}
               outerRadius={100}
               innerRadius={20}
@@ -382,7 +382,7 @@ function SmartStatementOverall({
       {/* {vendorsAmount === [] ? null : <PieChart />} */}
     </>
   );
-}
+};
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };

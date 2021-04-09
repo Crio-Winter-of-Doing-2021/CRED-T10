@@ -19,6 +19,9 @@ const Home = () => {
   }, []);
   useEffect(() => {
     setShowHello(!showHello);
+    return () => {
+      setShowHello(false);
+    };
   }, []);
 
   return (

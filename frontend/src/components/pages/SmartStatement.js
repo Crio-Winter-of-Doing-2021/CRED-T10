@@ -43,10 +43,25 @@ const SmartStatement = () => {
     setLoading(false);
     console.log('Get smart Statements');
   };
+
+  const removeSmartStatementData = () => {
+    setCategoriesCount([]);
+    setVendorsCount([]);
+    setCategoriesNames([]);
+    setVendorsNames([]);
+    setVendorsAmount([]);
+    setCategoriesAmount([]);
+    setVendorsAmountPercent([]);
+    setCategoriesAmountPercent([]);
+    setLoading(false);
+  };
   useEffect(() => {
     authContext.loadUser();
     getSmartStatementData();
     // console.log(data);
+    return () => {
+      removeSmartStatementData();
+    };
     // eslint-disable-next-line
   }, []);
 
@@ -54,7 +69,6 @@ const SmartStatement = () => {
     <React.Fragment>
       {loading ? null : (
         <SmartStatementOverall
-          data={data}
           categoriesCount={categoriesCount}
           vendorsCount={vendorsCount}
           vendorsNames={vendorsNames}
