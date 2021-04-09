@@ -15,7 +15,7 @@ connectDB();
 app.use(cors());
 
 // api-docs-swagger
-const swaggerUi = require("swagger-ui-express");
+const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./docs.yaml');
 
@@ -25,12 +25,12 @@ app.use('/api/swagger-ui/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 const PORT = process.env.PORT || 8081;
 
 // Init Middleware
-app.use(express.json({extended:false}));
+app.use(express.json({ extended: false }));
 app.use(express.urlencoded({ extended: true }));
 
 // Route Files
 app.get('/', function (req, res) {
-  res.status(200).json({msg:'Welcome to backend API NOW'});
+  res.status(200).json({ msg: 'Welcome to backend API NOW' });
 });
 
 app.use('/api', require('./routes/backendRoutes.js'));
@@ -46,6 +46,9 @@ app.use('/api/cards/:id/pay', require('./routes/payment.js'));
 // Smart Statement API (GET /cards/{id}/smartstatements)
 app.use('/api/cards/:id/smartstatement', require('./routes/smartStatement.js'));
 
-app.listen(PORT,()=>{
-    console.log(`Backend Server running successfully on ${PORT}....\n`);
+// Rewards routes
+app.use('/api/rewardPoints', require('./routes/rewards'));
+
+app.listen(PORT, () => {
+  console.log(`Backend Server running successfully on ${PORT}....\n`);
 });
