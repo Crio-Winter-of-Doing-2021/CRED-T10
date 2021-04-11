@@ -14,6 +14,7 @@ const User = require('../models/Users');
 // router for /cards/:id/pay
 router.post('/', auth, async (req, res) => {
   // Get the url from :id parameter in server.js which is sent by user
+  // @Todo work on ( add validation in backend as well for body.amount)
   const id = req.originalUrl.split('/')[3];
   await Card.findById(id, async (err, foundCard) => {
     // If card is found in database
@@ -38,7 +39,8 @@ router.post('/', auth, async (req, res) => {
       } else if (paymentAmount <= 19999) {
         user.rewardPoints += (paymentAmount * 3.5) / 100;
       }
-
+      // Ensure that the user.rewardPoints are only whole numbers
+      user.rewardPoints = Math.floor(user.rewardPoints);
       // Save updated card outstanding amount in database
       foundCard.save(async (err) => {
         if (!err) {

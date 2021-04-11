@@ -96,7 +96,7 @@ paths:
       tags:
         - 'backend'
       summary: 'Get User details'
-      description: 'gets the user details such as firstName,lastName,email,creditCards'
+      description: 'gets the user details such as firstName,lastName,email,creditCards and rewardPoints'
       operationId: 'getUserDetails'
       produces:
         - 'application/json'
@@ -185,6 +185,125 @@ paths:
             $ref: '#/definitions/MessageObject'
         '500':
           description: 'Server Error'
+  /rewardPoints:
+    post:
+      tags:
+        - 'backend'
+      summary: 'Post reward Points for a user'
+      description: 'Add or subtract the reward points of a user'
+      operationId: 'rewardPoints'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'header'
+          name: 'x-auth-token'
+          description: 'jwt authorization token'
+          required: true
+          type: 'string'
+        - in: 'body'
+          name: 'body'
+          description: 'new reward Points for a user'
+          required: true
+          schema:
+            $ref: '#/definitions/NewRewardPointsObject'
+      responses:
+        '200':
+          description: 'Successful update of rewards'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '400':
+          description: 'Invalid Operation (Negative reward Points)'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '401':
+          description: 'unauthorized access'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '422':
+          description: 'Body Parameters are invalid, cannot update reward Points of the user'
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '500':
+          description: 'Server Error'
+  /cards/{cardId}/pay:
+    post:
+      tags:
+        - 'backend'
+      summary: 'Pay outstanding amount'
+      description: 'This Route is used for payment of outstanding amount for a particular card'
+      operationId: 'payOutstandingAmount'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'cardId'
+          in: 'path'
+          description: 'Credit Card Id'
+          required: true
+          type: 'string'
+        - in: 'header'
+          name: 'x-auth-token'
+          description: 'jwt authorization token'
+          required: true
+          type: 'string'
+        - in: 'body'
+          name: 'body'
+          description: 'amount paying'
+          required: true
+          schema:
+            $ref: '#/definitions/AmountPayingObject'
+      responses:
+        '200':
+          description: Bill Paid Successfully'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '400':
+          description: 'Invalid Operation (Negative reward Points)'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '401':
+          description: 'unauthorized access'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '422':
+          description: 'Body Parameters are invalid, cannot update reward Points of the fetch amount from given object'
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '500':
+          description: 'Server Error'
+  /cards/{cardId}/smartstatement:
+    get:
+      tags:
+        - 'backend'
+      summary: 'Smart Statements'
+      description: 'This Route is used to send an object for representing the Smart Statement of a card on frontend'
+      operationId: 'getSmartStatement'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'cardId'
+          in: 'path'
+          description: 'Credit Card Id'
+          required: true
+          type: 'string'
+        - in: 'header'
+          name: 'x-auth-token'
+          description: 'jwt authorization token'
+          required: true
+          type: 'string'
+      responses:
+        '200':
+          description: Recieve object for displaying smart statements'
+          schema:
+            $ref: '#/definitions/SmartStatementObject'
+        '401':
+          description: 'unauthorized access'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '500':
+          description: 'Server Error'
 
 definitions:
   MessageObject:
@@ -239,6 +358,8 @@ definitions:
         type: 'array'
         items:
           type: 'string'
+      rewardPoints:
+        type: 'number'
   GetCardObject:
     type: 'object'
     properties:
@@ -291,3 +412,52 @@ definitions:
         type: 'array'
         items:
           $ref: '#/definitions/ValidationErrorMessage'
+  SmartStatementObject:
+    type: 'object'
+    properties:
+      categoriesNames:
+        type: 'array'
+        items:
+          type: 'string'
+      categoriesCount:
+        type: 'array'
+        items:
+          type: 'number'
+      categoriesAmount:
+        type: 'array'
+        items:
+          type: 'number'
+      vendorsNames:
+        type: 'array'
+        items:
+          type: 'string'
+      vendorsCount:
+        type: 'array'
+        items:
+          type: 'number'
+      vendorsAmount:
+        type: 'array'
+        items:
+          type: 'number'
+      categoriesAmountPercent:
+        type: 'array'
+        items:
+          type: 'string'
+      vendorsAmountPercent:
+        type: 'array'
+        items:
+          type: 'string'
+  AmountPayingObject:
+    type: 'object'
+    required:
+      - 'amount'
+    properties:
+      amount:
+        type: number
+  NewRewardPointsObject:
+    type: 'object'
+    required:
+      - 'newRewardPoints'
+    properties:
+      newRewardPoints:
+        type: number

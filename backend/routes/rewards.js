@@ -11,7 +11,6 @@ const auth = require('../middleware/auth');
 // route for /api/rewardPoints
 router.post(
   '/',
-
   [
     auth,
     [

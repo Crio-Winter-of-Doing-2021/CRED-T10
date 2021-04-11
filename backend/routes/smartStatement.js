@@ -10,9 +10,9 @@ const SmartStatement = require('../models/smartStatement');
 // Add at least 7 items for pie chart to look good
 const categoryList = ['Hotels', 'Food', 'Medical', 'Entertainment', 'Others'];
 
-// Get Smart Statements for current card (GET /cards/{id}/smartstatements)
+// Get Smart Statements for current card (GET /cards/{id}/smartstatement)
 router.get('/', auth, async (req, res) => {
-  // get card id or card Number
+  // get card id
   const cardId = req.originalUrl.split('/')[3];
 
   const foundSmartStatement = await SmartStatement.findOne({

@@ -117,12 +117,15 @@ router.post('/', auth, async (req, res) => {
       // Save card in SmartStatement for later use
       const smartStatement = new SmartStatement({
         creditCardId: card_id,
-        creditCardNumber: Number(cardNumber)
+        creditCardNumber: Number(cardNumber),
       });
 
       smartStatement.save((err, savedSmartStatement) => {
-        if(!err) {
-          console.log('Smart Statement saved successfully with id: ' + savedSmartStatement._id);
+        if (!err) {
+          console.log(
+            'Smart Statement saved successfully with id: ' +
+              savedSmartStatement._id
+          );
         } else {
           console.log(err);
         }
@@ -130,8 +133,15 @@ router.post('/', auth, async (req, res) => {
 
       res.status(200).json({ id: card_id, msg: 'Card saved successfully' });
     } else {
+      const tmpErr = String(err);
+      //console.log(typeof tmpErr, tmpErr);
+      if (tmpErr.split(' ')[0] === 'MongoError:') {
+        res.status(405).json({ msg: 'Card already exists' });
+        //console.log('Here', err);
+        return;
+      }
       res.status(500).json({ msg: err });
-      console.log(err);
+      //console.log('HERE', err);
     }
   });
 });
