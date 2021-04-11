@@ -5,7 +5,7 @@ import {
   CONFIRM_PAYMENT,
 } from '../types';
 
-export default (state, action) => {
+const paymentReducer = (state, action) => {
   switch (action.type) {
     case GET_TOTAL_PAYMENT_DUE:
       return {
@@ -30,6 +30,35 @@ export default (state, action) => {
       };
     default:
       return state;
-      break;
   }
 };
+
+export default paymentReducer;
+// export default (state, action) => {
+//   switch (action.type) {
+//     case GET_TOTAL_PAYMENT_DUE:
+//       return {
+//         ...state,
+//         maxPaymentAllowed: action.payload,
+//       };
+//     case PAY_AMOUNT:
+//       return {
+//         ...state,
+//         amountPaid: action.payload,
+//       };
+//     case CONFIRM_PAYMENT:
+//       return {
+//         ...state,
+//         paymentConfirmation: true,
+//       };
+//     case CLEAR_PAYMENT_STATE:
+//       return {
+//         maxPaymentAllowed: null,
+//         amountPaid: null,
+//         paymentConfirmation: false,
+//       };
+//     default:
+//       return state;
+//       break;
+//   }
+// };

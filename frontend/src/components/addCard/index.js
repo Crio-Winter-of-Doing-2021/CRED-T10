@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import CreditCard from '../card/index';
 
@@ -28,6 +28,7 @@ const AddCard = () => {
       setAlert(errors, 'danger');
       clearCardErrors();
     }
+    // eslint-disable-next-line
   }, [errors, showInfo]);
   const onAddButtonToggle = () => {
     setShowAddCard(!showAddCard);

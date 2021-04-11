@@ -3,15 +3,13 @@ import ViewCards from '../viewCards/index';
 import AddCard from '../addCard/index';
 import Alerts from '../layout/Alerts';
 import AuthContext from '../../context/auth/authContext';
-import CardContext from '../../context/card/cardContext';
 import Greet from '../extras/Greet';
 
 const Home = () => {
   const [showHello, setShowHello] = useState(false);
   const authContext = useContext(AuthContext);
-  const cardContext = useContext(CardContext);
   const { user, userLoading } = authContext;
-  const { cardsLoading } = cardContext;
+
   useLayoutEffect(() => {
     authContext.loadUser();
 
@@ -22,6 +20,7 @@ const Home = () => {
     return () => {
       setShowHello(false);
     };
+    // eslint-disable-next-line
   }, []);
 
   return (

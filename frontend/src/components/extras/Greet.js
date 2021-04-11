@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 const Greet = ({ setShowHello, showHello, user }) => {
   useEffect(() => {
     setTimeout(() => setShowHello(!showHello), 5000);
+    // eslint-disable-next-line
   }, []);
   return (
     <div

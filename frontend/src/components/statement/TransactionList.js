@@ -23,6 +23,7 @@ const TransactionList = ({ locationState }) => {
     return () => {
       clearTransactions();
     };
+    // eslint-disable-next-line
   }, []);
   useEffect(() => {
     if (loading === false) {
@@ -31,11 +32,14 @@ const TransactionList = ({ locationState }) => {
           transaction.transaction_type === 'debit'
             ? transaction.amount
             : -1 * transaction.amount;
+
+        return transaction;
         // setCounter(counter + 1);
       });
       console.log(loading, sumTotalForMonth);
       setSumForMonth(sumTotalForMonth);
     }
+    // eslint-disable-next-line
   }, [loading]);
 
   return (

@@ -289,8 +289,15 @@ const Container = styled.div`
   }
 `;
 
-export default (props) => (
+const StyledSmallCreditCard = (props) => (
   <Container>
     <Cards {...props} />
   </Container>
 );
+export default StyledSmallCreditCard;
+
+// export default (props) => (
+//   <Container>
+//     <Cards {...props} />
+//   </Container>
+// );

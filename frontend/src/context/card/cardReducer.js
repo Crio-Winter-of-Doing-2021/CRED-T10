@@ -8,7 +8,7 @@ import {
   CLEAR_ERRORS,
 } from '../types';
 
-export default (state, action) => {
+const cardReducer = (state, action) => {
   switch (action.type) {
     case GET_CARDS:
       return {
@@ -60,3 +60,58 @@ export default (state, action) => {
       return state;
   }
 };
+
+export default cardReducer;
+
+// export default (state, action) => {
+//   switch (action.type) {
+//     case GET_CARDS:
+//       return {
+//         ...state,
+//         loading: false,
+//         cardsLoading: false,
+//         cardList: action.payload.data,
+//       };
+//     case ADD_CARD:
+//       return {
+//         ...state,
+//         loading: true,
+//         cardsLoading: true,
+//       };
+//     case CLEAR_CARDS:
+//       return {
+//         ...state,
+//         cardList: null,
+//         card: null,
+//         cardsLoading: true,
+//         errors: null,
+//         loading: true,
+//       };
+//     case SET_CURRENT:
+//       return {
+//         ...state,
+//         card: action.payload,
+//         loading: false,
+//       };
+//     case CLEAR_CURRENT:
+//       return {
+//         ...state,
+//         loading: false,
+//         card: null,
+//       };
+//     case CARD_ERROR:
+//       return {
+//         ...state,
+//         cards: null,
+//         card: null,
+//         errors: action.payload,
+//       };
+//     case CLEAR_ERRORS:
+//       return {
+//         ...state,
+//         errors: null,
+//       };
+//     default:
+//       return state;
+//   }
+// };

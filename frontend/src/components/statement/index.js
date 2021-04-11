@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 import AuthContext from '../../context/auth/authContext';
@@ -23,6 +23,7 @@ const Statement = (props) => {
       }
     }
     // console.log(location);
+    // eslint-disable-next-line
   }, [authContext.loading, props.history]);
   return (
     <div style={{ backgroundColor: '#e0e0e0', color: '#333' }}>

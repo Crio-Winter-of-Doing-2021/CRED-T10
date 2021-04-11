@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import AuthContext from '../../context/auth/authContext';
 import AlertContext from '../../context/alert/alertContext';
 import Alerts from '../layout/Alerts';

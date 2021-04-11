@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useLocation, useParams, Link } from 'react-router-dom'; // use Params is used to get the url parmater
 import AuthContext from '../../context/auth/authContext';
-import CardContext from '../../context/card/cardContext';
 import PaymentContext from '../../context/payment/paymentContext';
 
 import CheckMarkGIF from '../static/checkMark.gif';
@@ -39,6 +38,7 @@ const Payment = (props) => {
         console.log('RIGHT NOW', location.state[0]);
       }
     }
+    // eslint-disable-next-line
   }, [authContext.loading, props.history]);
   useLayoutEffect(() => {
     if (isBillPaid) {
@@ -48,10 +48,12 @@ const Payment = (props) => {
       }, 2200);
       console.log(counter, 'counter');
     }
+    // eslint-disable-next-line
   }, [isBillPaid]);
   // clearing out the payment state after component dismount
   useEffect(() => {
     return () => paymentContext.clearPayments();
+    // eslint-disable-next-line
   }, []);
   const handlePaymentSubmit = (e) => {
     e.preventDefault();

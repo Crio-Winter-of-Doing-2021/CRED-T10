@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState, useEffect, useContext } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Card from '../card/Card';
 import CardSmall from '../card/CardSmall';
@@ -14,20 +14,23 @@ const CardItemContainer = (props) => {
   const authContext = useContext(AuthContext);
   const { creditCards } = authContext.user;
   const currentDate = new Date();
-  useLayoutEffect(() => {}, [window.innerWidth]);
+  useLayoutEffect(() => {
+    // eslint-disable-next-line
+  }, [window.innerWidth]);
   useEffect(() => {
     if (viewStatement === true) {
       props.history.push('/');
     }
+    // eslint-disable-next-line
   }, [viewStatement]);
   // useEffect(() => {
   //   if (paymentButton === 'active') {
   //     props.history.push('/payment/id');
   //   }
   // }, [paymentButton, props.history]);
-  const colorArr = [];
-  const values = {};
-  const arr = ['#93a1a1', '#073642', '#586e75', '#002b36'];
+  // const colorArr = [];
+  // const values = {};
+  // const arr = ['#93a1a1', '#073642', '#586e75', '#002b36'];
 
   const handleStatementClick = () => {
     setShowInputCalendar(!inputCalendar);

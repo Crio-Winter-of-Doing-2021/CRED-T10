@@ -2,7 +2,6 @@
 
 const mongoose = require('mongoose');
 
-
 // user schema:
 userSchema = mongoose.Schema({
   firstName: {
@@ -21,13 +20,18 @@ userSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
-},
+  },
   creditCards:[
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Card'
     }
   ],
+  rewardPoints: {
+     type: Number,
+     required: false,
+     default: 0
+  },
   }
 );
 

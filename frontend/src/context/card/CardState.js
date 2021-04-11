@@ -6,12 +6,10 @@ import {
   GET_CARDS,
   ADD_CARD,
   SET_CURRENT, // for viewing a particular card
-  CLEAR_CURRENT, // remove from a view a particular card
   CLEAR_CARDS, // remove card list from memory/localStorage
   CARD_ERROR,
   CLEAR_ERRORS,
 } from '../types';
-import setAuthToken from '../../utils/setAuthToken';
 
 const backendApi = {
   local: 'http://localhost:8081',

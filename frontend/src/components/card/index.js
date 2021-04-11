@@ -1,7 +1,7 @@
-import React, { useLayoutEffect, useContext } from 'react';
+import React from 'react';
 import Styles from './Styles';
 import { Form, Field } from 'react-final-form';
-import Card from './Card';
+
 import {
   formatCreditCardNumber,
   formatCVC,
@@ -9,7 +9,7 @@ import {
 } from './cardUtils';
 import CardSmall from './CardSmall';
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+// const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const CreditCard = ({ handleAddCard }) => {
   const onSubmit = async (values) => {

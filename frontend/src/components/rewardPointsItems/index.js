@@ -4,7 +4,12 @@ const RewardPointsListItem = ({ name, handleClick, image, currentPoints }) => {
   return (
     <div className="card" style={styleCard}>
       <div className="card-image waves-effect waves-block waves-light">
-        <img className="activator" src={image} style={{ height: '75px' }}></img>
+        <img
+          className="activator"
+          src={image}
+          style={{ height: '75px' }}
+          alt="Sponsor Company"
+        ></img>
       </div>
       <div className="card-content">
         <span className="card-title activator grey-text text-darken-4">

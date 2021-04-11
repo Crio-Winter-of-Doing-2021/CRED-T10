@@ -122,13 +122,13 @@ const RewardPoints = () => {
   ) : null;
 };
 
-const styleCard = {
-  padding: '8px',
-  width: '300px',
-  height: '240px',
-  margin: '10px',
-  border: '1px solid #fff',
-  backgroundColor: '#1F1F1F',
-};
+// const styleCard = {
+//   padding: '8px',
+//   width: '300px',
+//   height: '240px',
+//   margin: '10px',
+//   border: '1px solid #fff',
+//   backgroundColor: '#1F1F1F',
+// };
 
 export default RewardPoints;

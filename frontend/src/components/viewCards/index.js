@@ -1,7 +1,6 @@
-import React, { Fragment, useContext, useEffect, useLayoutEffect } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 
 import CardContext from '../../context/card/cardContext';
-import AuthContext from '../../context/auth/authContext';
 
 import CardListItem from './CardListItem';
 
@@ -11,8 +10,9 @@ const ViewCards = () => {
   useEffect(() => {
     getAllCards();
     return () => removeAllCards();
+    // eslint-disable-next-line
   }, []);
-  const values = {};
+
   if (cardList !== null && cardList.length === 0 && !loading) {
     return (
       <Fragment>

@@ -1,4 +1,4 @@
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import AuthState from './context/auth/AuthState';
@@ -12,12 +12,9 @@ import Navbar from './components/layout/Navbar';
 import NotFound from './components/pages/NotFound';
 import Login from './components/loginAndSignup/Login';
 import Signup from './components/loginAndSignup/Signup';
-import Footer from './components/layout/Footer';
 
 // Routes
 import PrivateRoute from './components/routing/PrivateRoute';
-import PublicRoute from './components/routing/PublicRoute';
-// import NotFoundRoute from './components/routing/NotFoundRoute';
 
 import './App.css';
 import Payment from './components/pages/Payment';

@@ -5,6 +5,7 @@ const NotFound = () => {
   const { logout } = authContext;
   useEffect(() => {
     logout();
+    // eslint-disable-next-line
   }, []);
   return (
     <div>

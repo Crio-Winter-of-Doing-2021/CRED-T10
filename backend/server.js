@@ -14,6 +14,13 @@ connectDB();
 // cors
 app.use(cors());
 
+// api-docs-swagger
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./docs.yaml');
+
+app.use('/api/swagger-ui/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 // Port configuration for local and cloud databases
 const PORT = process.env.PORT || 8081;
 
@@ -35,6 +42,12 @@ app.use(`/api/cards/:id/statements`, require('./routes/statements.js'));
 
 // Payment of the bill (POST /cards/{id}/pay)
 app.use('/api/cards/:id/pay', require('./routes/payment.js'));
+
+// Smart Statement API (GET /cards/{id}/smartstatements)
+app.use('/api/cards/:id/smartstatement', require('./routes/smartStatement.js'));
+
+// Rewards routes
+app.use('/api/rewardPoints', require('./routes/rewards'));
 
 app.listen(PORT, () => {
   console.log(`Backend Server running successfully on ${PORT}....\n`);
