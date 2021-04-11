@@ -1,0 +1,463 @@
+swagger: '2.0'
+info:
+  description: 'CRED T-10 backend endpoints'
+  version: '1.0.0'
+  title: 'CRED T-10 API'
+  contact:
+    email: 'prateek10023@gmail.com'
+host: 'localhost:8081/api'
+basePath: ''
+tags:
+  - name: 'backend'
+    description: 'Backend routes'
+  - name: 'bankRequest'
+    description: 'Bank routes'
+schemes:
+  - 'https'
+  - 'http'
+paths:
+  /:
+    get:
+      tags:
+        - 'backend'
+      summary: 'Check if backend is functional'
+      description: ''
+      operationId: 'checkIfBackendIsFunctional'
+      produces:
+        - 'application/json'
+      responses:
+        '200':
+          description: 'succesful operation'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '500':
+          description: 'Server Error'
+  /users:
+    post:
+      tags:
+        - 'backend'
+      summary: 'register a user'
+      description: 'resgister a user and get the auth token'
+      operationId: 'registerUser'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'input fields for registering a user'
+          required: true
+          schema:
+            $ref: '#/definitions/RegisterUser'
+      responses:
+        '200':
+          description: 'User Registered'
+          schema:
+            $ref: '#/definitions/AuthTokenResponse'
+        '409':
+          description: 'Email already exists'
+        '422':
+          description: 'Body Parameters are invalid, cannot register'
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '500':
+          description: 'Server Error'
+  /auth:
+    post:
+      tags:
+        - 'backend'
+      summary: 'Login a user'
+      description: 'Login a user and get the auth token'
+      operationId: 'loginUser'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'input fields for registering a user'
+          required: true
+          schema:
+            $ref: '#/definitions/LoginUser'
+      responses:
+        '200':
+          description: 'Login Successful'
+          schema:
+            $ref: '#/definitions/AuthTokenResponse'
+        '403':
+          description: 'Invalid Credentials'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '422':
+          description: 'Body Parameters are invalid, cannot login'
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '500':
+          description: 'Server Error'
+    get:
+      tags:
+        - 'backend'
+      summary: 'Get User details'
+      description: 'gets the user details such as firstName,lastName,email,creditCards and rewardPoints'
+      operationId: 'getUserDetails'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'header'
+          name: 'x-auth-token'
+          description: 'jwt authorization token'
+          required: true
+          type: 'string'
+      responses:
+        '200':
+          description: 'succesful operation'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/GetUserInformation'
+        '401':
+          description: 'unauthorized access'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '500':
+          description: 'Server Error'
+  /cards:
+    get:
+      tags:
+        - 'backend'
+      summary: 'Get cards of user'
+      description: 'gets all the cards of user'
+      operationId: 'getAllCards'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'header'
+          name: 'x-auth-token'
+          description: 'jwt authorization token'
+          required: true
+          type: 'string'
+      responses:
+        '200':
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/GetCardObject'
+        '401':
+          description: 'unauthorized access'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '500':
+          description: 'Server Error'
+    post:
+      tags:
+        - 'backend'
+      summary: 'Add a card for a user'
+      description: 'Adds a credit card for a user'
+      operationId: 'postCard'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'header'
+          name: 'x-auth-token'
+          description: 'jwt authorization token'
+          required: true
+          type: 'string'
+        - in: 'body'
+          name: 'body'
+          description: 'input fields for adding a card'
+          required: true
+          schema:
+            $ref: '#/definitions/PostCardObject'
+      responses:
+        '200':
+          description: 'Card saved'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '400':
+          description: 'Invalid Card/ cvv'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '401':
+          description: 'unauthorized access'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '500':
+          description: 'Server Error'
+  /rewardPoints:
+    post:
+      tags:
+        - 'backend'
+      summary: 'Post reward Points for a user'
+      description: 'Add or subtract the reward points of a user'
+      operationId: 'rewardPoints'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'header'
+          name: 'x-auth-token'
+          description: 'jwt authorization token'
+          required: true
+          type: 'string'
+        - in: 'body'
+          name: 'body'
+          description: 'new reward Points for a user'
+          required: true
+          schema:
+            $ref: '#/definitions/NewRewardPointsObject'
+      responses:
+        '200':
+          description: 'Successful update of rewards'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '400':
+          description: 'Invalid Operation (Negative reward Points)'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '401':
+          description: 'unauthorized access'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '422':
+          description: 'Body Parameters are invalid, cannot update reward Points of the user'
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '500':
+          description: 'Server Error'
+  /cards/{cardId}/pay:
+    post:
+      tags:
+        - 'backend'
+      summary: 'Pay outstanding amount'
+      description: 'This Route is used for payment of outstanding amount for a particular card'
+      operationId: 'payOutstandingAmount'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'cardId'
+          in: 'path'
+          description: 'Credit Card Id'
+          required: true
+          type: 'string'
+        - in: 'header'
+          name: 'x-auth-token'
+          description: 'jwt authorization token'
+          required: true
+          type: 'string'
+        - in: 'body'
+          name: 'body'
+          description: 'amount paying'
+          required: true
+          schema:
+            $ref: '#/definitions/AmountPayingObject'
+      responses:
+        '200':
+          description: Bill Paid Successfully'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '400':
+          description: 'Invalid Operation (Negative reward Points)'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '401':
+          description: 'unauthorized access'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '422':
+          description: 'Body Parameters are invalid, cannot update reward Points of the fetch amount from given object'
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '500':
+          description: 'Server Error'
+  /cards/{cardId}/smartstatement:
+    get:
+      tags:
+        - 'backend'
+      summary: 'Smart Statements'
+      description: 'This Route is used to send an object for representing the Smart Statement of a card on frontend'
+      operationId: 'getSmartStatement'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'cardId'
+          in: 'path'
+          description: 'Credit Card Id'
+          required: true
+          type: 'string'
+        - in: 'header'
+          name: 'x-auth-token'
+          description: 'jwt authorization token'
+          required: true
+          type: 'string'
+      responses:
+        '200':
+          description: Recieve object for displaying smart statements'
+          schema:
+            $ref: '#/definitions/SmartStatementObject'
+        '401':
+          description: 'unauthorized access'
+          type: 'object'
+          schema:
+            $ref: '#/definitions/MessageObject'
+        '500':
+          description: 'Server Error'
+
+definitions:
+  MessageObject:
+    type: 'object'
+    properties:
+      msg:
+        type: 'string'
+  AuthTokenResponse:
+    type: 'object'
+    properties:
+      token:
+        type: 'string'
+  RegisterUser:
+    type: 'object'
+    required:
+      - 'firstName'
+      - 'lastName'
+      - 'email'
+      - 'password'
+    properties:
+      firstName:
+        type: 'string'
+      lastName:
+        type: 'string'
+      email:
+        type: 'string'
+        format: 'email'
+      password:
+        type: 'string'
+  LoginUser:
+    type: 'object'
+    required:
+      - 'email'
+      - 'password'
+    properties:
+      email:
+        type: 'string'
+        format: 'email'
+      password:
+        type: 'string'
+  GetUserInformation:
+    type: 'object'
+    properties:
+      firstName:
+        type: 'string'
+      lastName:
+        type: 'string'
+      email:
+        type: 'string'
+        format: 'email'
+      creditCards:
+        type: 'array'
+        items:
+          type: 'string'
+      rewardPoints:
+        type: 'number'
+  GetCardObject:
+    type: 'object'
+    properties:
+      name:
+        type: 'string'
+      account_number:
+        type: 'number'
+      expiry_month:
+        type: 'number'
+      expiry_year:
+        type: 'number'
+  PostCardObject:
+    type: 'object'
+    required:
+      - 'cardName'
+      - 'cardNumber'
+      - 'expiryMonth'
+      - 'expiryYear'
+      - 'cvv'
+    properties:
+      cardName:
+        type: 'string'
+      cardNumber:
+        type: 'number'
+      expiryMonth:
+        type: 'number'
+      expiryYear:
+        type: 'number'
+      outStandingAmount:
+        type: 'number'
+      creditLimit:
+        type: 'number'
+      cvv:
+        type: 'number'
+  ValidationErrorMessage:
+    type: 'object'
+    properties:
+      value:
+        type: 'string'
+      msg:
+        type: 'string'
+      param:
+        type: 'string'
+      location:
+        type: 'string'
+  ValidationError:
+    type: 'object'
+    properties:
+      errors:
+        type: 'array'
+        items:
+          $ref: '#/definitions/ValidationErrorMessage'
+  SmartStatementObject:
+    type: 'object'
+    properties:
+      categoriesNames:
+        type: 'array'
+        items:
+          type: 'string'
+      categoriesCount:
+        type: 'array'
+        items:
+          type: 'number'
+      categoriesAmount:
+        type: 'array'
+        items:
+          type: 'number'
+      vendorsNames:
+        type: 'array'
+        items:
+          type: 'string'
+      vendorsCount:
+        type: 'array'
+        items:
+          type: 'number'
+      vendorsAmount:
+        type: 'array'
+        items:
+          type: 'number'
+      categoriesAmountPercent:
+        type: 'array'
+        items:
+          type: 'string'
+      vendorsAmountPercent:
+        type: 'array'
+        items:
+          type: 'string'
+  AmountPayingObject:
+    type: 'object'
+    required:
+      - 'amount'
+    properties:
+      amount:
+        type: number
+  NewRewardPointsObject:
+    type: 'object'
+    required:
+      - 'newRewardPoints'
+    properties:
+      newRewardPoints:
+        type: number
