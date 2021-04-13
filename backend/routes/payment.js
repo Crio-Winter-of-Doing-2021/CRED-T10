@@ -38,6 +38,8 @@ router.post('/', auth, async (req, res) => {
         user.rewardPoints += (paymentAmount * 3) / 100;
       } else if (paymentAmount <= 19999) {
         user.rewardPoints += (paymentAmount * 3.5) / 100;
+      } else {
+        user.rewardPoints += (paymentAmount * 4) / 100;
       }
       // Ensure that the user.rewardPoints are only whole numbers
       user.rewardPoints = Math.floor(user.rewardPoints);

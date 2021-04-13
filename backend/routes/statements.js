@@ -142,8 +142,11 @@ router.post('/:year/:month', async (req, res) => {
 
   foundCard.outstanding_amount += totalTransactionAmount;
   console.log('Updated Outstanding Amount: ' + foundCard.outstanding_amount);
-
-  await Card.updateOne({ account_number: cardNumber }, foundCard);
+  try {
+    await Card.updateOne({ account_number: cardNumber }, foundCard);
+  } catch (err) {
+    console.log(err);
+  }
   // *********************************************************************
   console.log(foundCard._id);
 
